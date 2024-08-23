@@ -8,3 +8,8 @@ body {
   background-position: center;
   background-size: cover;
 }
+
+.conversations {
+  scrollbar-width: thin; 
+  scrollbar-color: rgb(72, 72, 72) rgba(0, 0, 0, 0);
+}
