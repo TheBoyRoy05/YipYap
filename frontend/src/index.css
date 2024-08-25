@@ -13,3 +13,8 @@ body {
   scrollbar-width: thin; 
   scrollbar-color: rgb(72, 72, 72) rgba(0, 0, 0, 0);
 }
+
+.text-box:focus {
+  border: none;
+  outline: none;  
+}
