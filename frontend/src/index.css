@@ -9,9 +9,9 @@ body {
   background-size: cover;
 }
 
-.conversations {
+.dark-scrollbar {
   scrollbar-width: thin; 
-  scrollbar-color: rgb(72, 72, 72) rgba(0, 0, 0, 0);
+  scrollbar-color: #555 rgba(0, 0, 0, 0);
 }
 
 .text-box:focus {
