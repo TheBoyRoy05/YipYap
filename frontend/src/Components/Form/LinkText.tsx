@@ -1,20 +1,22 @@
+import { Link } from "react-router-dom"
+
 interface LinkProps {
   href: string;
   text: string;
   linkText: string;
 }
 
-const Link = ({ href, text, linkText }: LinkProps) => {
+const LinkText = ({ href, text, linkText }: LinkProps) => {
   return (
     <div className="text-sm mt-4 ml-1 block text-center">
       <p>
         {text}
-        <a href={href} className="hover:underline text-blue-500">
+        <Link to={href} className="hover:underline text-blue-500">
           {linkText}
-        </a>
+        </Link>
       </p>
     </div>
   );
 };
 
-export default Link;
+export default LinkText;

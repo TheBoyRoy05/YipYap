@@ -1,8 +1,12 @@
+import { useState } from "react";
 import Button from "../Components/Form/Button";
 import Input from "../Components/Form/Input";
-import Link from "../Components/Form/Link";
+import LinkText from "../Components/Form/LinkText";
 
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
       <div className="w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0">
@@ -11,10 +15,20 @@ const Login = () => {
           <span className="text-blue-500"> YipYap</span>
         </h1>
         <form action="">
-          <Input name="username" type="text" />
-          <Input name="password" type="password" />
-          <Link
-            href="#"
+          <Input
+            name="Username"
+            type="text"
+            value={username}
+            setValue={setUsername}
+          />
+          <Input
+            name="Password"
+            type="password"
+            value={password}
+            setValue={setPassword}
+          />
+          <LinkText
+            href="/signup"
             text={"Don't have an account? "}
             linkText={"Sign Up"}
           />

@@ -4,6 +4,7 @@ import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 export const signUp = async (req, res) => {
   try {
+    console.log(req.body);
     const { fullName, username, password, confirmPassword, gender } = req.body;
 
     if (password.length < 8) {
