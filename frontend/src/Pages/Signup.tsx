@@ -25,7 +25,7 @@ const Signup = () => {
           Sign Up
           <span className="text-blue-500"> YipYap</span>
         </h1>
-        <form action="" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Input
             name="Full Name"
             type="text"

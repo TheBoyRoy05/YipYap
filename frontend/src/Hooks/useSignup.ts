@@ -1,5 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useAuthContext } from "../Context/AuthContext";
 
 interface SignupProps {
   fullName: string;
@@ -11,6 +12,7 @@ interface SignupProps {
 
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
+  const { setAuthUser } = useAuthContext();
 
   const signup = async (props: SignupProps) => {
     const success = handleInputErrors(props);
@@ -25,8 +27,12 @@ const useSignup = () => {
       });
 
       const data = await res.json();
-      console.log(data);
+      if (data.error) throw new Error(data.error);
+
+      localStorage.setItem("chat-user", JSON.stringify(data));
+      setAuthUser(data);
     } catch (error) {
+      console.error(error);
       toast.error(
         error instanceof Error ? error.message : "An unexpected error occurred"
       );
