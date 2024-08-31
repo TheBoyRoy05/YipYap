@@ -11,7 +11,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [gender, setGender] = useState("");
-  const { signup } = useSignup();
+  const { loading, signup } = useSignup();
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -56,7 +56,7 @@ const Signup = () => {
             text="Already have an account? "
             linkText="Log In"
           />
-          <Button text="Sign Up" />
+          <Button text="Sign Up" loading={loading} />
         </form>
       </div>
     </div>
