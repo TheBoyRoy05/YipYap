@@ -2,10 +2,17 @@ import { useState } from "react";
 import Button from "../Components/Form/Button";
 import Input from "../Components/Form/Input";
 import LinkText from "../Components/Form/LinkText";
+import useLogin from "../Hooks/useLogin";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { loading, login } = useLogin();
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    await login({ username, password });
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
@@ -14,7 +21,7 @@ const Login = () => {
           Login
           <span className="text-blue-500"> YipYap</span>
         </h1>
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <Input
             name="Username"
             type="text"
@@ -32,7 +39,7 @@ const Login = () => {
             text={"Don't have an account? "}
             linkText={"Sign Up"}
           />
-          <Button text="Login" />
+          <Button text="Login" loading={loading} />
         </form>
       </div>
     </div>
