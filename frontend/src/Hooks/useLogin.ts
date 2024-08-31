@@ -12,6 +12,9 @@ const useLogin = () => {
   const { setAuthUser } = useAuthContext();
 
   const login = async (props: LoginProps) => {
+    const success = handleInputErrors(props);
+    if (!success) return;
+
     setLoading(true);
     try {
       const res = await fetch("/api/auth/login", {
@@ -37,5 +40,20 @@ const useLogin = () => {
 
   return { loading, login };
 };
+
+function handleInputErrors(props: LoginProps) {
+  const { username, password } = props;
+
+  const checkExists = (name: string, value: string) => {
+    if (!value) {
+      toast.error(`Please fill in ${name}`);
+      return false;
+    }
+  };
+
+  checkExists("Username", username);
+  checkExists("Password", password);
+  return true;
+}
 
 export default useLogin;
