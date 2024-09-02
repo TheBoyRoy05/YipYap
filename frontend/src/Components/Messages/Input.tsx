@@ -8,13 +8,12 @@ import { useAuthContext } from "../../Context/AuthContext";
 const Input = () => {
   const [message, setMessage] = useState("");
   const { authUser } = useAuthContext();
-  const senderID = authUser._id;
-  const { receiverID } = useConversation();
+  const { receiver } = useConversation();
   const { loading, sendMessage } = useSendMessage();
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    sendMessage({ senderID, receiverID, message });
+    sendMessage({ senderID: authUser._id, receiverID: receiver._id, message });
     setMessage("");
   };
 

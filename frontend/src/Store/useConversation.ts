@@ -11,17 +11,28 @@ interface MessageType {
   updatedAt: string;
 }
 
+interface ReceiverType {
+  _id: string;
+  username: string;
+  profilePic: string;
+}
+
 interface ConversationType {
-  receiverID: string;
+  receiver: ReceiverType;
   messages: MessageType[];
-  setReceiverID: (convoID: string) => void;
+  setReceiver: (receiver: ReceiverType) => void;
   setMessages: (messages: MessageType[]) => void;
 }
 
 const useConversation = create<ConversationType>((set) => ({
-  receiverID: "",
+  receiver: {
+    _id: "",
+    fullName: "",
+    username: "",
+    profilePic: "",
+  },
   messages: [],
-  setReceiverID: (receiverID: string) => set({ receiverID }),
+  setReceiver: (receiver: ReceiverType) => set({ receiver }),
   setMessages: (messages: MessageType[]) => set({ messages }),
 }));
 
