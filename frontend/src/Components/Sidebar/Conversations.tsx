@@ -1,20 +1,21 @@
-import useGetConvos from "../../Hooks/useGetConvos";
+import useGetUsers from "../../Hooks/useGetUsers";
 import Conversation from "./Conversation";
 
 const Conversations = () => {
-  const { loading, convos } = useGetConvos();
+  const { loading, users } = useGetUsers();
 
   return (
     <div className="py-2 flex flex-col overflow-y-auto dark-scrollbar">
       {loading ? (
         <span className="loading loading-spinner" />
       ) : (
-        convos.map((convo, index) => (
+        users.map((user, index) => (
           <Conversation
             key={index}
-            username={convo.username}
+            receiverID={user._id}
+            username={user.username}
             status="status"
-            profilePic={convo.profilePic}
+            profilePic={user.profilePic}
             numNotifs={0}
           />
         ))

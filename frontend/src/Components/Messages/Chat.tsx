@@ -1,10 +1,12 @@
 import { TiMessages } from "react-icons/ti";
 import Input from "./Input"
 import Messages from "./Messages"
+import useConversation from "../../Store/useConversation";
 
 const Chat = () => {
-  const convoSelected = true;
-  return convoSelected ? (
+  const { receiverID } = useConversation();
+
+  return receiverID != "" ? (
     <div className="md:min-w-[450px] flex flex-col">
       <div className="bg-slate-500 px-4 py-2">
         <span className="text-gray-900 font-bold">Username</span>
