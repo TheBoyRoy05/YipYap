@@ -8,7 +8,7 @@ const Search = () => {
         className="flex-grow bg-transparent placeholder-slate-500 text-box"
         placeholder="Search..."
       />
-      <button type="submit" className="flex items-center justify-center w-10 h-10 my-auto mx-1 text-xl bg-blue-500 rounded-full text-white">
+      <button type="submit" className="flex items-center justify-center w-8 h-8 my-auto mx-2 text-lg bg-blue-500 rounded-full text-white">
         <IoMdSearch />
       </button>
     </form>
