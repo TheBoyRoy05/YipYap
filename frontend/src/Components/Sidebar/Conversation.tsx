@@ -1,32 +1,29 @@
-import useConversation from "../../Store/useConversation";
+import useStore from "../../Store/useStore";
+import { UserType } from "../../Utils/Types";
 
 interface ConvoProps {
-  receiverID: string;
-  username: string;
-  status: string;
-  profilePic: string;
+  user: UserType;
   numNotifs: number;
 }
 
-const Conversation = (props: ConvoProps) => {
-  const { receiverID, username, status, profilePic, numNotifs } = props;
-  const { receiver, setReceiver } = useConversation();
-  const selected = receiverID == receiver._id;
+const Conversation = ({user, numNotifs}: ConvoProps) => {
+  const { receiver, setReceiver } = useStore();
+  const selected = user._id == receiver._id;
 
   return (
-    <button onClick={() => setReceiver({ _id: receiverID, username, profilePic })}>
+    <button onClick={() => setReceiver(user)}>
       <div className={`flex gap-2 items-center hover:bg-sky-500 rounded-lg p-2 py-1 cursor-pointer group text-left ${selected ? "bg-sky-500" : ""}`}>
         <div className="avatar online">
           <div className="w-12 rounded-full">
-            <img src={profilePic} alt="user avatar" />
+            <img src={user.profilePic} alt="user avatar" />
           </div>
         </div>
         <div className="flex flex-col flex-1">
           <p className={`group-hover:text-white ${selected ? "text-white" : "text-gray-200"}`}>
-            {username}
+            {user.username}
           </p>
           <span className={`text-sm group-hover:text-gray-200 ${selected ? "text-gray-200" : "text-gray-400"}`}>
-            {status}
+            {"status"}
           </span>
         </div>
         {numNotifs > 0 ? (

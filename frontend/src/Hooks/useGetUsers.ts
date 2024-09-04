@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
-export interface UserType {
-  _id: string;
-  __v: number;
-  fullName: string;
-  gender: string;
-  profilePic: string;
-  username: string;
-}
+import useStore from "../Store/useStore";
 
 const useGetUsers = () => {
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState<UserType[]>([]);
+  const { conversations, setConversations } = useStore();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -22,7 +14,7 @@ const useGetUsers = () => {
         const data = await res.json();
         if (data.error) throw new Error(data.error);
 
-        setUsers(data);
+        setConversations(data);
       } catch (error) {
         console.error(error);
         toast.error(
@@ -36,9 +28,9 @@ const useGetUsers = () => {
     };
 
     getUsers();
-  }, []);
+  }, [setConversations]);
 
-  return { loading, users };
+  return { loading, conversations };
 };
 
 export default useGetUsers;

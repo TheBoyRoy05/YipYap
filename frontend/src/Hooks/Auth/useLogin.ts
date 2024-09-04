@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useAuthContext } from "../../Context/AuthContext";
+import useStore from "../../Store/useStore";
 
 interface LoginProps {
   username: string;
@@ -9,7 +9,7 @@ interface LoginProps {
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
-  const { setAuthUser } = useAuthContext();
+  const { setAuthUser } = useStore();
 
   const login = async (props: LoginProps) => {
     const success = handleInputErrors(props);

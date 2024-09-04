@@ -1,7 +1,7 @@
 interface ButtonProps {
   text: string;
   loading: boolean;
-  click?: () => {};
+  click?: () => void;
 }
 
 const Button = ({ text, loading, click }: ButtonProps) => {

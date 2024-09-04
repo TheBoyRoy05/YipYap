@@ -1,5 +1,5 @@
 import Siderbar from "../Components/Sidebar/Siderbar";
-import Chat from "../Components/Messages/Chat";
+import Chat from "../Components/Chat/Chat";
 
 const Home = () => {
   return (

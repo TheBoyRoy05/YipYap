@@ -1,19 +1,16 @@
 import { TiMessages } from "react-icons/ti";
 import Input from "./Input";
 import Messages from "./Messages";
-import useConversation from "../../Store/useConversation";
+import useStore from "../../Store/useStore";
 import { useEffect } from "react";
+import { emptyUser } from "../../Utils/Types";
 
 const Chat = () => {
-  const { receiver, setReceiver } = useConversation();
+  const { receiver, setReceiver } = useStore();
 
   useEffect(() => {
     return () => {
-      setReceiver({
-        _id: "",
-        username: "",
-        profilePic: "",
-      });
+      setReceiver(emptyUser);
     };
   }, [setReceiver]);
 
@@ -34,9 +31,11 @@ const Chat = () => {
 };
 
 const NoChat = () => {
+  const { authUser } = useStore();
+
   return (
     <div className="flex flex-col items-center justify-center w-full h-full px-4 sm:text-lg md:text-xl text-gray-200 font-semibold gap-2">
-      <p>Welcome Username</p>
+      <p>{`Welcome ${authUser.username}`}</p>
       <p>Select a chat to start messaging</p>
       <TiMessages className="text-3xl md:text-6xl text-center" />
     </div>

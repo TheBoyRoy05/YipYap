@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useAuthContext } from "../../Context/AuthContext";
+import useStore from "../../Store/useStore";
 
 interface SignupProps {
   fullName: string;
@@ -12,7 +12,7 @@ interface SignupProps {
 
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
-  const { setAuthUser } = useAuthContext();
+  const { setAuthUser } = useStore();
 
   const signup = async (props: SignupProps) => {
     const success = handleInputErrors(props);
