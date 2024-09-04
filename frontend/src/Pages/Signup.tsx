@@ -3,7 +3,7 @@ import Button from "../Components/Form/Button";
 import Input from "../Components/Form/Input";
 import LinkText from "../Components/Form/LinkText";
 import GenderSelect from "../Components/Form/GenderSelect";
-import useSignup from "../Hooks/useSignup";
+import useSignup from "../Hooks/Auth/useSignup";
 
 const Signup = () => {
   const [fullName, setFullName] = useState("");

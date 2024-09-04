@@ -2,18 +2,15 @@ import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import useSendMessage from "../../Hooks/useSendMessage";
-import useConversation from "../../Store/useConversation";
-import { useAuthContext } from "../../Context/AuthContext";
 
 const Input = () => {
   const [message, setMessage] = useState("");
-  const { authUser } = useAuthContext();
-  const { receiver } = useConversation();
   const { loading, sendMessage } = useSendMessage();
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    sendMessage({ senderID: authUser._id, receiverID: receiver._id, message });
+    if (!message) return;
+    await sendMessage(message);
     setMessage("");
   };
 

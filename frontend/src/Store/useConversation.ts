@@ -1,10 +1,9 @@
 import { create } from "zustand";
-import { UserType } from "../Hooks/useGetUsers";
 
-interface MessageType {
+export interface MessageType {
   _id: string;
   __v: number;
-  senderID: UserType;
+  senderID: string;
   receiverID: string;
   message: string;
   createdAt: string;
@@ -27,7 +26,6 @@ interface ConversationType {
 const useConversation = create<ConversationType>((set) => ({
   receiver: {
     _id: "",
-    fullName: "",
     username: "",
     profilePic: "",
   },

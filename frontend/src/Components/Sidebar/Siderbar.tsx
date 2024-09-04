@@ -1,7 +1,7 @@
 import Button from "../Form/Button"
 import Search from "./Search"
 import Conversations from "./Conversations"
-import useLogout from "../../Hooks/useLogout"
+import useLogout from "../../Hooks/Auth/useLogout"
 
 const Siderbar = () => {
   const { loading, logout } = useLogout();

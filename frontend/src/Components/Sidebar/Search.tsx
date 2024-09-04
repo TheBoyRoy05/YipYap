@@ -2,7 +2,7 @@ import { IoMdSearch } from "react-icons/io";
 
 const Search = () => {
   return (
-    <form className="flex h-12 bg-gray-800 rounded-full pl-4">
+    <form className="flex h-14 bg-gray-800 rounded-full pl-4">
       <input
         type="text"
         className="flex-grow bg-transparent placeholder-slate-500 text-box"

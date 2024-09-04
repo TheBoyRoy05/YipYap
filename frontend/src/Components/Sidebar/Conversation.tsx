@@ -1,4 +1,3 @@
-import useGetConvo from "../../Hooks/useGetConvo";
 import useConversation from "../../Store/useConversation";
 
 interface ConvoProps {
@@ -11,31 +10,22 @@ interface ConvoProps {
 
 const Conversation = (props: ConvoProps) => {
   const { receiverID, username, status, profilePic, numNotifs } = props;
-  const { setReceiver } = useConversation();
-  const { loading, getConvo } = useGetConvo();
-
-  const handleClick = () => {
-    setReceiver({ _id: receiverID, username, profilePic });
-    getConvo(receiverID);
-  };
+  const { receiver, setReceiver } = useConversation();
+  const selected = receiverID == receiver._id;
 
   return (
-    <button onClick={handleClick}>
-      <div className="flex gap-2 items-center hover:bg-sky-500 rounded-lg p-2 py-1 cursor-pointer group text-left">
+    <button onClick={() => setReceiver({ _id: receiverID, username, profilePic })}>
+      <div className={`flex gap-2 items-center hover:bg-sky-500 rounded-lg p-2 py-1 cursor-pointer group text-left ${selected ? "bg-sky-500" : ""}`}>
         <div className="avatar online">
           <div className="w-12 rounded-full">
             <img src={profilePic} alt="user avatar" />
           </div>
         </div>
         <div className="flex flex-col flex-1">
-          <p className="text-gray-200 group-hover:text-white">
-            {loading ? (
-              <span className="loading loading-dots loading-xs"></span>
-            ) : (
-              username
-            )}
+          <p className={`group-hover:text-white ${selected ? "text-white" : "text-gray-200"}`}>
+            {username}
           </p>
-          <span className="text-sm text-gray-400 group-hover:text-gray-200">
+          <span className={`text-sm group-hover:text-gray-200 ${selected ? "text-gray-200" : "text-gray-400"}`}>
             {status}
           </span>
         </div>

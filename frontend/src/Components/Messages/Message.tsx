@@ -1,22 +1,23 @@
+import { useAuthContext } from "../../Context/AuthContext";
+import useConversation, { MessageType } from "../../Store/useConversation";
+
 interface MessageProps {
   first: boolean;
-  username: string;
-  profilePic: string;
-  message: string;
-  dateTime: string;
+  message: MessageType;
 }
 
-const Message = (props: MessageProps) => {
-  const { first, username, profilePic, message, dateTime } = props;
-  const { date, time } = formatDateTime(dateTime);
-  console.log(formatDateTime("2024-09-01T15:02:30.821Z"));
+const Message = ({first, message}: MessageProps) => {
+  const { date, time } = formatDateTime(message.createdAt);
+  const { authUser } = useAuthContext();
+  const { receiver } = useConversation();
+  const sender = message.senderID === authUser._id ? authUser : receiver;
 
   return (
     <div className="flex items-center hover:bg-gray-700 group">
       {first ? (
         <div className="avatar">
           <div className="w-10 m-2 rounded-full">
-            <img src={profilePic} alt="user avatar" />
+            <img src={sender.profilePic} alt="user avatar" />
           </div>
         </div>
       ) : (
@@ -27,13 +28,13 @@ const Message = (props: MessageProps) => {
       <div className="flex flex-col">
         {first ? (
           <div className="flex text-sm mt-1">
-            <p className="text-white mr-2">{username}</p>
+            <p className="text-white mr-2">{sender.username}</p>
             <span>{`${date} ${time}`}</span>
           </div>
         ) : (
           <></>
         )}
-        <p className="text-gray-300">{message}</p>
+        <p className="text-gray-300">{message.message}</p>
       </div>
     </div>
   );

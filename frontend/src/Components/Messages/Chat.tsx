@@ -2,9 +2,20 @@ import { TiMessages } from "react-icons/ti";
 import Input from "./Input";
 import Messages from "./Messages";
 import useConversation from "../../Store/useConversation";
+import { useEffect } from "react";
 
 const Chat = () => {
-  const { receiver } = useConversation();
+  const { receiver, setReceiver } = useConversation();
+
+  useEffect(() => {
+    return () => {
+      setReceiver({
+        _id: "",
+        username: "",
+        profilePic: "",
+      });
+    };
+  }, [setReceiver]);
 
   return receiver._id != "" ? (
     <div className="md:min-w-[450px] flex flex-col">

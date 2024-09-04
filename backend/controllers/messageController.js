@@ -44,14 +44,7 @@ export const getMessages = async (req, res) => {
     const conversation = await Conversation.findOne({
       participants: { $all: [senderID, receiverID] },
     })
-      .populate({
-        path: "messages",
-        populate: {
-          path: "senderID",
-          model: "User",
-          select: "-password",
-        },
-      })
+      .populate("messages")
       .exec();
 
     res.status(200).json(conversation ? conversation.messages : []);
