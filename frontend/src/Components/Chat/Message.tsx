@@ -1,4 +1,4 @@
-import useStore from "../../Store/useStore";
+import useStore from "../../Store/useStore.ts";
 import { formatDateTime } from "../../Utils/Functions";
 import { MessageType } from "../../Utils/Types";
 

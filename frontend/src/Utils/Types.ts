@@ -25,14 +25,3 @@ export interface MessageType {
   createdAt: string;
   updatedAt: string;
 }
-
-export interface StoreType {
-  authUser: UserType;
-  receiver: UserType;
-  messages: MessageType[];
-  conversations: UserType[];
-  setAuthUser: (authUser: UserType) => void;
-  setReceiver: (receiver: UserType) => void;
-  setMessages: (messages: MessageType[]) => void;
-  setConversations: (conversation: UserType[]) => void;
-}

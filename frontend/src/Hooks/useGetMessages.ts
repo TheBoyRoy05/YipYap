@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import useStore from "../Store/useStore";
+import useStore from "../Store/useStore.ts";
 
 const useGetMessages = () => {
   const [loading, setLoading] = useState(false);
