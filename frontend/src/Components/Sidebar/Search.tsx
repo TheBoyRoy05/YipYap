@@ -1,29 +1,23 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { IoMdSearch } from "react-icons/io";
-import useStore from "../../Store/useStore";
-import { UserType } from "../../Utils/Types";
+import useSearch from "../../Hooks/useSearch";
 
 const Search = () => {
-  const [search, setSearch] = useState("");
-  const { conversations, setConversations } = useStore();
-  const initialConversations = useRef(JSON.parse(JSON.stringify(conversations)));
+  const [text, setText] = useState("");
+  const { search } = useSearch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    setConversations(
-      initialConversations.current.filter((c: UserType) =>
-        c.username.toLowerCase().includes(e.target.value.toLowerCase())
-      )
-    );
-  };
+    setText(e.target.value);
+    search(e.target.value);
+  }
 
   return (
     <form className="flex h-14 bg-gray-800 rounded-full pl-4">
       <input
         type="text"
-        className="flex-grow bg-transparent placeholder-slate-500 text-box"
+        className="flex-grow bg-transparent placeholder-slate-500 text-box p-2"
         placeholder="Search..."
-        value={search}
+        value={text}
         onChange={handleChange}
       />
       <button

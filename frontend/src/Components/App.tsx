@@ -4,7 +4,7 @@ import Signup from "../Pages/Signup";
 import { Toaster } from "react-hot-toast";
 import useStore from "../Store/useStore.ts";
 import { Navigate, Route, Routes } from "react-router-dom";
-import useSocketConnection from "../Store/useSocketConnection.ts";
+import useSocketConnection from "../Hooks/useSocketConnection.ts";
 
 const App = () => {
   const { authUser } = useStore();

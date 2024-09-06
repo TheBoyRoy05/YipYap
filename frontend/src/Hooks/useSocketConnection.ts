@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { io, Socket } from "socket.io-client";
-import useSocket from "./useSocket";
+import useSocket from "../Store/useSocket";
 
 const useSocketConnection = (authUser: { _id: string }) => {
   const { socket, setSocket, setOnlineUserIDs } = useSocket();
@@ -27,12 +28,10 @@ const useSocketConnection = (authUser: { _id: string }) => {
       socket.close();
       setSocket(null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authUser]);
 
   useEffect(() => {
     socket?.on("getOnlineUsers", (userIDs) => {
-      console.log(userIDs);
       setOnlineUserIDs(userIDs);
     });
   }, [setOnlineUserIDs, socket]);
