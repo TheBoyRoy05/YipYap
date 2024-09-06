@@ -5,17 +5,18 @@ import { MessageType } from "../Utils/Types";
 
 const useListenMessages = () => {
   const { socket } = useSocket();
-  const { setMessages } = useStore();
+  const { receiver, setMessages } = useStore();
 
   useEffect(() => {
     socket?.on("newMessage", (message: MessageType) => {
-      setMessages((messages) => [...messages, message]);
+      if (receiver._id == message.receiverID)
+        setMessages((messages) => [...messages, message]);
     });
 
     return () => {
       if (socket) socket.off("newMessage");
     };
-  }, [setMessages, socket]);
+  }, [receiver._id, setMessages, socket]);
 };
 
 export default useListenMessages;

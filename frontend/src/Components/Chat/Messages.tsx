@@ -15,7 +15,7 @@ const Messages = () => {
   }, [messages]);
 
   return (
-    <div className="px flex-1 overflow-auto dark-scrollbar">
+    <div className="px flex-1 overflow-auto dark-scrollbar my-2">
       {messages.map((message, index) => (
         <div key={index} ref={lastMessage}>
           <Message
