@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import useSocket from "../Store/useSocket";
 import useStore from "../Store/useStore";
 import { MessageType } from "../Utils/Types";
-import Quack from "../../assets/Sounds/quack_5.mp3";
+import Quack from "../assets/Sounds/quack_5.mp3";
 
 const useListenMessages = () => {
   const { socket } = useSocket();
