@@ -23,6 +23,9 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Start project
+        run: npm start
+
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v3
         with:
@@ -41,9 +44,6 @@ jobs:
         with:
           name: production-files
           path: ./frontend/dist
-
-      - name: Start project
-        run: npm start
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
