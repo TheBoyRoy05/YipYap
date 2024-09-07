@@ -44,7 +44,7 @@ jobs:
 
       - name: Start project
         working-directory: ./
-        run: npm start
+        run: npm start --verbose
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
