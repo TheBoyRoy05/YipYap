@@ -10,7 +10,14 @@ const useGetUsers = () => {
     const getUsers = async () => {
       setLoading(true);
       try {
-        const res = await fetch("/api/users");
+        const token = localStorage.getItem("jwt");
+        const res = await fetch("/api/users", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         const data = await res.json();
         if (data.error) throw new Error(data.error);
 

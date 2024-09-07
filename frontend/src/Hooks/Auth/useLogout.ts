@@ -18,7 +18,9 @@ const useLogout = () => {
       const data = await res.json();
       if (data.error) throw new Error(data.error);
 
+      localStorage.removeItem("jwt");
       localStorage.removeItem("chat-user");
+
       setAuthUser(emptyUser);
     } catch (error) {
       console.error(error);

@@ -29,8 +29,10 @@ const useSignup = () => {
       const data = await res.json();
       if (data.error) throw new Error(data.error);
 
-      localStorage.setItem("chat-user", JSON.stringify(data));
-      setAuthUser(data);
+      localStorage.setItem("jwt", data.token);
+      localStorage.setItem("chat-user", JSON.stringify(data.user));
+
+      setAuthUser(data.user);
     } catch (error) {
       console.error(error);
       toast.error(

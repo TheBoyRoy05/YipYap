@@ -9,9 +9,12 @@ const useSendMessage = () => {
   const sendMessage = async (message: string) => {
     setLoading(true);
     try {
+      const token = localStorage.getItem("jwt");
       const res = await fetch(`/api/messages/send/${receiver._id}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+         },
         body: JSON.stringify({message}),
       });
 

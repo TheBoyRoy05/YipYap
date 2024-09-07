@@ -10,14 +10,23 @@ const useGetMessages = () => {
     const getMessages = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/messages/${receiver._id}`);
+        const token = localStorage.getItem("jwt");
+        const res = await fetch(`/api/messages/${receiver._id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        
         const data = await res.json();
         if (data.error) throw new Error(data.error);
         setMessages(data);
       } catch (error) {
         console.error(error);
         toast.error(
-          error instanceof Error ? error.message : "An unexpected error occurred"
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred"
         );
       } finally {
         setLoading(false);
@@ -25,7 +34,7 @@ const useGetMessages = () => {
     };
 
     if (receiver._id) getMessages();
-  }, [receiver._id, setMessages])
+  }, [receiver._id, setMessages]);
 
   return { loading, messages };
 };

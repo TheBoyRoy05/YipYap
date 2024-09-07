@@ -9,11 +9,16 @@ const useSocketConnection = (authUser: { _id: string }) => {
   useEffect(() => {
     if (authUser._id) {
       try {
-        const newSocket: Socket = io("https://yipyap.onrender.com/", {
-          query: {
-            userID: authUser._id,
-          },
-        });
+        const newSocket: Socket = io(
+          process.env.NODE_ENV === "development"
+            ? "http://localhost:3000"
+            : "https://yipyap.onrender.com/",
+          {
+            query: {
+              userID: authUser._id,
+            },
+          }
+        );
         setSocket(newSocket);
 
         return () => {
