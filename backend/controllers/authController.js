@@ -26,9 +26,7 @@ export const signUp = async (req, res) => {
       username,
       password: hashedPassword,
       gender,
-      profilePic: `https://avatar.iran.liara.run/public/${
-        gender == "male" ? "boy" : "girl"
-      }?username=${username}`,
+      profilePic: `https://api.dicebear.com/9.x/initials/svg?seed=${username.replace(" ", "+")}`,
     });
 
     if (newUser) {

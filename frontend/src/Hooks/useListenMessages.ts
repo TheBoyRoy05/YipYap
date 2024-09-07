@@ -12,8 +12,11 @@ const useListenMessages = () => {
   useEffect(() => {
     const sound = new Audio(Quack);
 
+    console.log("quack")
     socket?.on("newMessage", (message: MessageType) => {
+      console.log("newMessage", message, receiver)
       if (receiver._id == message.senderID) {
+        console.log("setMessages")
         setMessages((messages) => [...messages, message]);
       }
       sound.currentTime = 0;
