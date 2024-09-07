@@ -3,14 +3,14 @@ import { useEffect } from "react";
 import useSocket from "../Store/useSocket";
 import useStore from "../Store/useStore";
 import { MessageType } from "../Utils/Types";
-import MeowMeow from "../assets/Sounds/sad-meow-song.mp3";
+import Quack from "../../assets/Sounds/quack_5.mp3";
 
 const useListenMessages = () => {
   const { socket } = useSocket();
   const { receiver, setMessages } = useStore();
 
   useEffect(() => {
-    const sound = new Audio(MeowMeow);
+    const sound = new Audio(Quack);
 
     socket?.on("newMessage", (message: MessageType) => {
       if (receiver._id == message.senderID) {
