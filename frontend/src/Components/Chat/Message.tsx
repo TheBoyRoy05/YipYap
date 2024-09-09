@@ -13,7 +13,7 @@ const Message = ({first, message}: MessageProps) => {
   const sender = message.senderID === authUser._id ? authUser : receiver;
 
   return (
-    <div className={`flex items-center hover:bg-gray-700 group ${first ? "mt-2" : ""}`}>
+    <div className={`flex items-center hover:bg-gray-800 group ${first ? "mt-2" : ""}`}>
       {first ? (
         <div className="avatar">
           <div className="w-10 mx-3 rounded-full">

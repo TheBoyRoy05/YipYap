@@ -5,7 +5,7 @@ const Conversations = () => {
   const { loading, conversations: users } = useGetUsers();
 
   return (
-    <div className="flex-grow py-2 flex flex-col overflow-y-auto dark-scrollbar">
+    <div className="flex-grow flex flex-col overflow-y-auto dark-scrollbar">
       {loading ? (
         <span className="loading loading-spinner" />
       ) : (

@@ -2,6 +2,7 @@ import Button from "../Form/Button"
 import Search from "./Search"
 import Conversations from "./Conversations"
 import useLogout from "../../Hooks/Auth/useLogout"
+import Title from "./Title"
 
 const Siderbar = () => {
   const { loading, logout } = useLogout();
@@ -9,7 +10,7 @@ const Siderbar = () => {
   return (
     <div className="p-4 border-r border-slate-500 flex flex-col">
       <Search />
-      <div className="divider px-3" />
+      <Title />
       <Conversations />
       <Button text="Logout" loading={loading} click={logout} />
     </div>
