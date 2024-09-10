@@ -3,7 +3,7 @@ import useConversation from "../Store/useConversation";
 import { UserType } from "../Utils/Types";
 
 const useSearch = () => {
-  const { conversations, setConversations } = useConversation();
+  const { conversations } = useConversation();
   const initialConversations = useRef<UserType[] | null>(null);
 
   // Initialize initialConversations when conversations is first populated
@@ -13,9 +13,9 @@ const useSearch = () => {
     }
   }, [conversations]);
 
-  const search = (text: string) => {
+  const search = (text: string, setter: (users: UserType[]) => void) => {
     if (initialConversations.current) {
-      setConversations(
+      setter(
         initialConversations.current.filter((c: UserType) =>
           c.fullName.toLowerCase().includes(text.toLowerCase())
         )
