@@ -35,9 +35,7 @@ const Conversation = ({ user, numNotifs }: ConvoProps) => {
         </div>
       </div>
       <div className="flex flex-col flex-1">
-        <p
-          className={`text-lg leading-5 group-hover:text-white ${usernameColor}`}
-        >
+        <p className={`text-lg leading-5 group-hover:text-white ${usernameColor}`}>
           {user.fullName}
         </p>
         <span className={`text-sm group-hover:text-gray-200 ${statusColor}`}>

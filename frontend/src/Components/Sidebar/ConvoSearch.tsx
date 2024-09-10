@@ -23,10 +23,10 @@ const ConvoSearch = () => {
   }
 
   return (
-    <form className="flex w-72 h-12 bg-gray-800 rounded-2xl px-2 text-lg">
+    <form className="flex w-72 h-12 bg-gray-800 rounded-2xl px-3 text-lg">
       <button
         type="button"
-        className="flex items-center justify-center w-8 h-8 my-auto text-xl text-white"
+        className="flex items-center justify-center w-8 h-8 my-auto text-2xl text-white"
         onClick={handleButtonClick}
       >
         {focused ? <IoArrowBack /> : <IoMdSearch />}
