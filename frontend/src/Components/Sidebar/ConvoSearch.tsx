@@ -3,7 +3,7 @@ import { IoMdSearch } from "react-icons/io";
 import useSearch from "../../Hooks/useSearch";
 import { IoArrowBack } from "react-icons/io5";
 
-const Search = () => {
+const ConvoSearch = () => {
   const { search } = useSearch();
   const [text, setText] = useState("");
   const [focused, setFocused] = useState(false);
@@ -43,4 +43,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default ConvoSearch;

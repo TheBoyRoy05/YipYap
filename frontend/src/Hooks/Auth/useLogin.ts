@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import useStore from "../../Store/useStore";
+import useConversation from "../../Store/useConversation";
 
 interface LoginProps {
   username: string;
@@ -9,7 +9,7 @@ interface LoginProps {
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
-  const { setAuthUser } = useStore();
+  const { setAuthUser } = useConversation();
 
   const login = async (props: LoginProps) => {
     const success = handleInputErrors(props);

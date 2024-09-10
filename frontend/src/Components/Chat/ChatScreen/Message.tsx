@@ -1,6 +1,6 @@
-import useStore from "../../Store/useStore.ts";
-import { formatDateTime } from "../../Utils/Functions";
-import { MessageType } from "../../Utils/Types";
+import useConversation from "../../../Store/useConversation.ts";
+import { formatDateTime } from "../../../Utils/Functions.ts";
+import { MessageType } from "../../../Utils/Types.ts";
 
 interface MessageProps {
   first: boolean;
@@ -9,7 +9,7 @@ interface MessageProps {
 
 const Message = ({first, message}: MessageProps) => {
   const { date, time } = formatDateTime(message.createdAt);
-  const { authUser, receiver } = useStore();
+  const { authUser, receiver } = useConversation();
   const sender = message.senderID === authUser._id ? authUser : receiver;
 
   return (
@@ -28,7 +28,7 @@ const Message = ({first, message}: MessageProps) => {
       <div className="flex flex-col">
         {first ? (
           <div className="flex text-sm mt-1">
-            <p className="text-white mr-2">{sender.username}</p>
+            <p className="text-white mr-2">{sender.fullName}</p>
             <span>{`${date} ${time}`}</span>
           </div>
         ) : (

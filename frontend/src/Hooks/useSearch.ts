@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
-import useStore from "../Store/useStore";
+import useConversation from "../Store/useConversation";
 import { UserType } from "../Utils/Types";
 
 const useSearch = () => {
-  const { conversations, setConversations } = useStore();
+  const { conversations, setConversations } = useConversation();
   const initialConversations = useRef<UserType[] | null>(null);
 
   // Initialize initialConversations when conversations is first populated
@@ -14,11 +14,10 @@ const useSearch = () => {
   }, [conversations]);
 
   const search = (text: string) => {
-    // Ensure initialConversations is populated before filtering
     if (initialConversations.current) {
       setConversations(
         initialConversations.current.filter((c: UserType) =>
-          c.username.toLowerCase().includes(text.toLowerCase())
+          c.fullName.toLowerCase().includes(text.toLowerCase())
         )
       );
     }

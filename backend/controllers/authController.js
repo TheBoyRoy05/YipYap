@@ -26,7 +26,7 @@ export const signUp = async (req, res) => {
       username,
       password: hashedPassword,
       gender,
-      profilePic: `https://api.dicebear.com/9.x/initials/svg?seed=${username.replace(
+      profilePic: `https://api.dicebear.com/9.x/initials/svg?seed=${fullName.replace(
         " ",
         "+"
       )}`,

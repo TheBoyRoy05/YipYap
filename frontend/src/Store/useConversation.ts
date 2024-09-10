@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { emptyUser, MessageType, UserType } from "../Utils/Types";
 
-interface StoreType {
+interface ConversationType {
   authUser: UserType;
   receiver: UserType;
   messages: MessageType[];
@@ -16,15 +16,15 @@ interface StoreType {
   ) => void;
 }
 
-const useStore = create<StoreType>((set) => {
+const useConversation = create<ConversationType>((set) => {
   // Helper function to handle both direct values and callbacks (Thanks ChatGPT)
   const createSetter =
-    <T extends keyof StoreType>(key: T) =>
-    (value: StoreType[T] | ((prev: StoreType[T]) => StoreType[T])) =>
-      set((state: StoreType) => ({
+    <T extends keyof ConversationType>(key: T) =>
+    (value: ConversationType[T] | ((prev: ConversationType[T]) => ConversationType[T])) =>
+      set((state: ConversationType) => ({
         [key]:
           typeof value === "function"
-            ? (value as (prev: StoreType[T]) => StoreType[T])(state[key])
+            ? (value as (prev: ConversationType[T]) => ConversationType[T])(state[key])
             : value,
       }));
 
@@ -40,4 +40,4 @@ const useStore = create<StoreType>((set) => {
   };
 });
 
-export default useStore;
+export default useConversation;

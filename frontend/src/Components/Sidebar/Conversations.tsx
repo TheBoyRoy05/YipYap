@@ -2,12 +2,14 @@ import useGetUsers from "../../Hooks/useGetUsers";
 import Conversation from "./Conversation";
 
 const Conversations = () => {
-  const { loading, conversations: users } = useGetUsers();
+  const { loading, users } = useGetUsers();
 
   return (
     <div className="flex-grow flex flex-col overflow-y-auto dark-scrollbar">
       {loading ? (
-        <span className="loading loading-spinner" />
+        <div className="h-full flex items-center justify-center">
+          <span className="loading loading-bars loading-lg" />
+        </div>
       ) : (
         users.map((user, index) => (
           <Conversation

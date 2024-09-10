@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import useStore from "../Store/useStore";
+import useConversation from "../Store/useConversation";
 
 const useGetUsers = () => {
   const [loading, setLoading] = useState(false);
-  const { conversations, setConversations } = useStore();
+  const { conversations, setConversations } = useConversation();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -37,7 +37,7 @@ const useGetUsers = () => {
     getUsers();
   }, [setConversations]);
 
-  return { loading, conversations };
+  return { loading, users: conversations };
 };
 
 export default useGetUsers;

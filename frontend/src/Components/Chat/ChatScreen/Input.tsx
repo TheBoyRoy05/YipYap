@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
-import useSendMessage from "../../Hooks/useSendMessage";
+import useSendMessage from "../../../Hooks/useSendMessage";
 
 const Input = () => {
   const [message, setMessage] = useState("");

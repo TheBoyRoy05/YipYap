@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import useSocket from "../Store/useSocket";
-import useStore from "../Store/useStore";
+import useConversation from "../Store/useConversation";
 import { MessageType } from "../Utils/Types";
 import Quack from "../assets/Sounds/quack_5.mp3";
 
 const useListenMessages = () => {
   const { socket } = useSocket();
-  const { receiver, setMessages } = useStore();
+  const { receiver, setMessages } = useConversation();
 
   useEffect(() => {
     const sound = new Audio(Quack);

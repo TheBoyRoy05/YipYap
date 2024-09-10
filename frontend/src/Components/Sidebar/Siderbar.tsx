@@ -1,5 +1,5 @@
 import Button from "../Form/Button"
-import Search from "./Search"
+import ConvoSearch from "./ConvoSearch"
 import Conversations from "./Conversations"
 import useLogout from "../../Hooks/Auth/useLogout"
 import Title from "./Title"
@@ -9,7 +9,7 @@ const Siderbar = () => {
 
   return (
     <div className="p-4 border-r border-slate-500 flex flex-col">
-      <Search />
+      <ConvoSearch />
       <Title />
       <Conversations />
       <Button text="Logout" loading={loading} click={logout} />

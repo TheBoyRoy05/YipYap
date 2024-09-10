@@ -2,13 +2,14 @@ import Home from "../Pages/Home";
 import Login from "../Pages/Login";
 import Signup from "../Pages/Signup";
 import { Toaster } from "react-hot-toast";
-import useStore from "../Store/useStore.ts";
+import useConversation from "../Store/useConversation.ts";
 import { Navigate, Route, Routes } from "react-router-dom";
 import useSocketConnection from "../Hooks/useSocketConnection.ts";
 import { useEffect } from "react";
+import { emptyUser } from "../Utils/Types.ts";
 
 const App = () => {
-  const { authUser, setAuthUser } = useStore();
+  const { authUser, setAuthUser, setReceiver } = useConversation();
   useSocketConnection(authUser); // Connect to socket server
 
   // Save user on reload
@@ -16,6 +17,13 @@ const App = () => {
     const currentUser = localStorage.getItem("chat-user");
     if (currentUser) setAuthUser( JSON.parse(currentUser) );
   }, [setAuthUser])
+  
+  // Remove receiver on reload
+  useEffect(() => {
+    return () => {
+      setReceiver(emptyUser);
+    };
+  }, [setReceiver]);
 
   return (
     <div className="p-4 h-screen flex items-center justify-center">
