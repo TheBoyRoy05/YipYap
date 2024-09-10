@@ -3,9 +3,8 @@ import User from "../models/userModel.js";
 export const getUsers = async (req, res) => {
   try {
     const currentUserID = req.user._id;
-    const allUsers = await User.find({ _id: { $ne: currentUserID } }).select(
-      "-password"
-    );
+    const allUsers = await User.find({ _id: { $ne: currentUserID } }); // Exclude current user
+
     res.status(200).json(allUsers);
   } catch (error) {
     console.error("Error in getUsers controller", error.message);

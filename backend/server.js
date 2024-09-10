@@ -5,10 +5,11 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import friendRoutes from "./routes/friendRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 
 import connectDatabase from "./database/connect.js";
-import { app, server } from "./socket/socket.js";
+import { app, server } from "./socket.js";
 
 const port = process.env.PORT || 3000;
 const _dirname = path.resolve();
@@ -19,6 +20,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/friends", friendRoutes);
 app.use("/api/messages", messageRoutes);
 
 app.use(express.static(path.join(_dirname, "frontend/dist")));

@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     gender: {
       type: String,
@@ -24,6 +25,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    friends: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        select: false,
+      },
+    ],
   },
   { timestamps: true }
 );

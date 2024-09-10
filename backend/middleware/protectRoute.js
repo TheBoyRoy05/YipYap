@@ -5,9 +5,7 @@ const protectRoute = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res
-        .status(401)
-        .json({ error: "Unauthorized - No token provided" });
+      return res.status(401).json({ error: "Unauthorized - No token provided" });
     }
 
     const token = authHeader.split(" ")[1];
@@ -17,7 +15,7 @@ const protectRoute = async (req, res, next) => {
       return res.status(401).json({ error: "Unauthorized - Invalid Token" });
     }
 
-    const user = await User.findById(decoded.userId).select("-password");
+    const user = await User.findById(decoded.userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }

@@ -7,9 +7,7 @@ export const signUp = async (req, res) => {
     const { fullName, username, password, confirmPassword, gender } = req.body;
 
     if (password.length < 8) {
-      return res
-        .status(400)
-        .json({ error: "Password must be 8 characters or more" });
+      return res.status(400).json({ error: "Password must be 8 characters or more" });
     } else if (password != confirmPassword) {
       return res.status(400).json({ error: "Passwords don't match" });
     }
@@ -26,10 +24,7 @@ export const signUp = async (req, res) => {
       username,
       password: hashedPassword,
       gender,
-      profilePic: `https://api.dicebear.com/9.x/initials/svg?seed=${fullName.replace(
-        " ",
-        "+"
-      )}`,
+      profilePic: `https://api.dicebear.com/9.x/initials/svg?seed=${fullName.replace(" ", "+")}`,
     });
 
     if (newUser) {

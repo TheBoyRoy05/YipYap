@@ -1,6 +1,6 @@
 import Message from "../models/messageModel.js";
 import Conversation from "../models/convoModel.js";
-import { getReceiverSocketID, io } from "../socket/socket.js";
+import { getReceiverSocketID, io } from "../socket.js";
 
 export const sendMessage = async (req, res) => {
   try {
@@ -47,9 +47,7 @@ export const getMessages = async (req, res) => {
 
     const conversation = await Conversation.findOne({
       participants: { $all: [senderID, receiverID] },
-    })
-      .populate("messages")
-      .exec();
+    }).populate("messages");
 
     res.status(200).json(conversation ? conversation.messages : []);
   } catch (error) {
