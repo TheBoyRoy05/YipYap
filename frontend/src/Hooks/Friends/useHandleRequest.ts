@@ -1,15 +1,16 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const useSendRequest = () => {
+const useHandleRequest = () => {
   const [loading, setLoading] = useState(false);
+  type ActionType = "accept" | "decline" | "cancel";
 
-  const sendFriendRequest = async (username: string) => {
+  const handleFriendRequest = async (requestID: string, action: ActionType) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("jwt");
-      const res = await fetch(`/api/friends/requests/send?username=${username}`, {
-        method: "POST",
+      const res = await fetch(`/api/friends/requests/handle/${requestID}?action=${action}`, {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -27,7 +28,7 @@ const useSendRequest = () => {
     }
   };
 
-  return { loading, sendFriendRequest };
+  return { loading, sendFriendRequest: handleFriendRequest };
 };
 
-export default useSendRequest;
+export default useHandleRequest;

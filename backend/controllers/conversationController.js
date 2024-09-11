@@ -19,11 +19,24 @@ export const createConversation = async (req, res) => {
 export const getMyConversations = async (req, res) => {
   try {
     const userID = req.user._id;
-    const conversations = await Conversation.find({ participants: userID })
-      .populate("messages")
-      .populate("participants")
-      .lean();
-    res.status(200).json(conversations);
+    
+    const user = await User.findById(userID).populate({
+      path: "conversations",
+       populate: {
+        path: "participants",
+        model: "User",
+       },
+       populate: {
+        path: "messages",
+        model: "Message",
+       }
+    }).lean();
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json(user.conversations || []);
   } catch (error) {
     console.error("Error in getConversation controller: ", error.message);
     res.status(500).json({ error: "Internal server error" });

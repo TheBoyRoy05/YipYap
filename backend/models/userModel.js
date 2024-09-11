@@ -25,6 +25,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    conversations: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Conversation",
+        select: false,
+      },
+    ],
     friends: [
       {
         type: mongoose.Schema.Types.ObjectId,
