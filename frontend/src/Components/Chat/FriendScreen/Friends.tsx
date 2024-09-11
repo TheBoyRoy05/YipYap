@@ -1,25 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
 import useFriends from "../../../Store/useFriends";
 import FriendItem from "./FriendItem";
 import FriendCard from "./FriendCard";
 import useGetFriends from "../../../Hooks/Friends/useGetFriends";
 
-interface CardsProps {
-  layout: "grid" | "list";
-}
-
-const Friends = ({ layout }: CardsProps) => {
+const Friends = () => {
   const { loading, friends } = useGetFriends();
-  const { setFriends } = useFriends();
+  const { layout } = useFriends();
   const style =
     layout === "grid" && !loading
       ? "grid grid-cols-5 content-stretch px-12 gap-x-10 gap-y-8"
       : "flex flex-col gap-y-4 px-12";
-
-  useEffect(() => {
-    setFriends(friends)
-  }, [loading]);
 
   return (
     <div className={`flex-grow overflow-y-auto dark-scrollbar ${style}`}>
@@ -30,9 +20,9 @@ const Friends = ({ layout }: CardsProps) => {
       ) : (
         friends.map((friend, index) =>
           layout === "grid" ? (
-            <FriendCard key={index} friend={friend} />
+            <FriendCard key={index} user={friend} />
           ) : (
-            <FriendItem key={index} friend={friend} />
+            <FriendItem key={index} user={friend} />
           )
         )
       )}

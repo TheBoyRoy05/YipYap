@@ -1,12 +1,10 @@
 import { FiGrid } from "react-icons/fi";
 import { MdFormatListBulleted } from "react-icons/md";
+import useFriends from "../../../Store/useFriends";
 
-interface LayoutSelectProps {
-  layout: "grid" | "list";
-  setLayout: React.Dispatch<React.SetStateAction<"grid" | "list">>;
-}
+const LayoutSelect = () => {
+  const { layout, setLayout } = useFriends();
 
-const LayoutSelect = ({ layout, setLayout }: LayoutSelectProps) => {
   return (
     <div className="flex w-40 justify-center mr-20">
       <button
