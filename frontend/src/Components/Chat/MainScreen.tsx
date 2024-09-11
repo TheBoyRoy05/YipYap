@@ -4,17 +4,17 @@ import useFriends from "../../Store/useFriends";
 import DefaultScreen from "./DefaultScreen";
 import FriendScreen from "./FriendScreen/FriendScreen";
 
-const Chat = () => {
-  const { receiver } = useConversation();
+const MainScreen = () => {
+  const { conversation } = useConversation();
   const { showFriendsPage } = useFriends();
 
   return showFriendsPage ? (
     <FriendScreen />
-  ) : receiver._id === "" ? (
+  ) : conversation._id === "" ? (
     <DefaultScreen />
   ) : (
     <ChatScreen />
   );
 };
 
-export default Chat;
+export default MainScreen;

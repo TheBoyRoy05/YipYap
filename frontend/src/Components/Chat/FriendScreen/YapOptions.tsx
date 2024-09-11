@@ -1,18 +1,27 @@
 import { IoCall, IoChatbubble, IoVideocam } from "react-icons/io5";
 import useConversation from "../../../Store/useConversation";
 import useFriends from "../../../Store/useFriends";
-import { UserType } from "../../../Utils/Types";
+import { emptyConversation, UserType } from "../../../Utils/Types";
 
 interface YapOptionsProps {
-  user: UserType;
+  friend: UserType;
 }
 
-const YapOptions = ({ user }: YapOptionsProps) => {
-  const { setReceiver } = useConversation();
+const YapOptions = ({ friend }: YapOptionsProps) => {
+  const { authUser, myConversations, setConversation } = useConversation();
   const { setShowFriendsPage } = useFriends();
 
   const handleMessageClick = () => {
-    setReceiver(user);
+    const thisConversation = myConversations.find((conversation) => {
+      const participantIDs = conversation.participants.map((p) => p._id);
+      return (
+        participantIDs.length === 2 &&
+        participantIDs.includes(friend._id) &&
+        participantIDs.includes(authUser._id)
+      );
+    });
+
+    setConversation(thisConversation || emptyConversation);
     setShowFriendsPage(false);
   };
 

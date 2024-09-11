@@ -1,3 +1,7 @@
+export const randInt = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 export const formatDateTime = (dateTime: string) => {
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",

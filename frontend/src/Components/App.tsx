@@ -6,11 +6,11 @@ import useConversation from "../Store/useConversation.ts";
 import { Navigate, Route, Routes } from "react-router-dom";
 import useSocketConnection from "../Hooks/useSocketConnection.ts";
 import { useEffect } from "react";
-import { emptyUser } from "../Utils/Types.ts";
+import { emptyConversation } from "../Utils/Types.ts";
 
 const App = () => {
-  const { authUser, setAuthUser, setReceiver } = useConversation();
-  useSocketConnection(authUser); // Connect to socket server
+  const { authUser, setAuthUser, setConversation } = useConversation();
+  useSocketConnection(authUser);
 
   // Save user on reload
   useEffect(() => {
@@ -21,9 +21,9 @@ const App = () => {
   // Remove receiver on reload
   useEffect(() => {
     return () => {
-      setReceiver(emptyUser);
+      setConversation(emptyConversation);
     };
-  }, [setReceiver]);
+  }, [setConversation]);
 
   return (
     <div className="p-4 h-screen flex items-center justify-center">

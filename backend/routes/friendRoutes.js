@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.get("/", protectRoute, getFriends);
 router.get("/requests/", protectRoute, getFriendRequests);
-router.post("/requests/send/:username", protectRoute, sendFriendRequest);
+router.post("/requests/send/", protectRoute, sendFriendRequest);
 
 export default router;

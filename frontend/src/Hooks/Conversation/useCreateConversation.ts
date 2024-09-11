@@ -1,38 +1,37 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import useConversation from "../Store/useConversation";
+import useConversation from "../../Store/useConversation";
 
-const useSendMessage = () => {
+const useCreateConversation = () => {
   const [loading, setLoading] = useState(false);
-  const { messages, setMessages, receiver } = useConversation();
+  const { setConversation } = useConversation();
 
-  const sendMessage = async (message: string) => {
+  const createConversation = async (participants: string[]) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("jwt");
-      const res = await fetch(`/api/messages/send/${receiver._id}`, {
+      const res = await fetch(`/api/conversation/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ participants }),
       });
 
       const data = await res.json();
       if (data.error) throw new Error(data.error);
-      setMessages([...messages, data]);
+
+      setConversation(data);
     } catch (error) {
       console.error(error);
-      toast.error(
-        error instanceof Error ? error.message : "An unexpected error occurred"
-      );
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
     } finally {
       setLoading(false);
     }
   };
 
-  return { loading, sendMessage };
+  return { loading, createConversation };
 };
 
-export default useSendMessage;
+export default useCreateConversation;

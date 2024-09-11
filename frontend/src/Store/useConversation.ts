@@ -1,42 +1,38 @@
 import { create } from "zustand";
-import { emptyUser, MessageType, UserType } from "../Utils/Types";
+import { ConversationType, emptyConversation, emptyUser, UserType } from "../Utils/Types";
 
-interface ConversationType {
+interface ConvoType {
   authUser: UserType;
-  receiver: UserType;
-  messages: MessageType[];
-  conversations: UserType[];
+  conversation: ConversationType;
+  myConversations: ConversationType[];
   setAuthUser: (authUser: UserType | ((prev: UserType) => UserType)) => void;
-  setReceiver: (receiver: UserType | ((prev: UserType) => UserType)) => void;
-  setMessages: (
-    messages: MessageType[] | ((prev: MessageType[]) => MessageType[])
+  setConversation: (
+    messages: ConversationType | ((prev: ConversationType) => ConversationType)
   ) => void;
-  setConversations: (
-    conversations: UserType[] | ((prev: UserType[]) => UserType[])
+  setMyConversations: (
+    conversations: ConversationType[] | ((prev: ConversationType[]) => ConversationType[])
   ) => void;
 }
 
-const useConversation = create<ConversationType>((set) => {
+const useConversation = create<ConvoType>((set) => {
   // Helper function to handle both direct values and callbacks (Thanks ChatGPT)
   const createSetter =
-    <T extends keyof ConversationType>(key: T) =>
-    (value: ConversationType[T] | ((prev: ConversationType[T]) => ConversationType[T])) =>
-      set((state: ConversationType) => ({
+    <T extends keyof ConvoType>(key: T) =>
+    (value: ConvoType[T] | ((prev: ConvoType[T]) => ConvoType[T])) =>
+      set((state: ConvoType) => ({
         [key]:
           typeof value === "function"
-            ? (value as (prev: ConversationType[T]) => ConversationType[T])(state[key])
+            ? (value as (prev: ConvoType[T]) => ConvoType[T])(state[key])
             : value,
       }));
 
   return {
     authUser: emptyUser,
-    receiver: emptyUser,
-    messages: [],
-    conversations: [],
+    conversation: emptyConversation,
+    myConversations: [],
     setAuthUser: createSetter("authUser"),
-    setReceiver: createSetter("receiver"),
-    setMessages: createSetter("messages"),
-    setConversations: createSetter("conversations"),
+    setConversation: createSetter("conversation"),
+    setMyConversations: createSetter("myConversations"),
   };
 });
 

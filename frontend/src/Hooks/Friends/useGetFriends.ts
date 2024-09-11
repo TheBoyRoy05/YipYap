@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import useConversation from "../Store/useConversation";
+import useFriends from "../../Store/useFriends";
 
-const useGetUsers = () => {
+const useGetFriends = () => {
   const [loading, setLoading] = useState(false);
-  const { conversations, setConversations } = useConversation();
+  const { friends, setFriends } = useFriends();
 
   useEffect(() => {
-    const getUsers = async () => {
+    const getFriends = async () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("jwt");
-        const res = await fetch("/api/users", {
+        const res = await fetch(`/api/friends/`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -21,23 +21,19 @@ const useGetUsers = () => {
         const data = await res.json();
         if (data.error) throw new Error(data.error);
 
-        setConversations(data);
+        setFriends(data);
       } catch (error) {
         console.error(error);
-        toast.error(
-          error instanceof Error
-            ? error.message
-            : "An unexpected error occurred"
-        );
+        toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
       } finally {
         setLoading(false);
       }
     };
 
-    getUsers();
-  }, [setConversations]);
+    getFriends();
+  }, [setFriends]);
 
-  return { loading, users: conversations };
+  return { loading, friends };
 };
 
-export default useGetUsers;
+export default useGetFriends;

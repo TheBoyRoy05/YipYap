@@ -4,8 +4,17 @@ export const emptyUser = {
   fullName: "",
   gender: "",
   profilePic: "",
-  username: ""
-}
+  username: "",
+};
+
+export const emptyConversation = {
+  _id: "",
+  __v: 0,
+  name: "",
+  profilePic: "",
+  participants: [],
+  messages: [],
+};
 
 export interface UserType {
   _id: string;
@@ -20,8 +29,17 @@ export interface MessageType {
   _id: string;
   __v: number;
   senderID: string;
-  receiverID: string;
+  conversationID: string;
   message: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ConversationType {
+  _id: string;
+  __v: number;
+  name: string;
+  profilePic: string;
+  participants: UserType[];
+  messages: MessageType[];
 }

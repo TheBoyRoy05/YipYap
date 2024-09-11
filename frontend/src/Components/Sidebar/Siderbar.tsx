@@ -1,6 +1,6 @@
 import Button from "../Form/Button"
 import ConvoSearch from "./ConvoSearch"
-import Conversations from "./Conversations"
+import Chats from "./Chats"
 import useLogout from "../../Hooks/Auth/useLogout"
 import Title from "./Title"
 
@@ -11,7 +11,7 @@ const Siderbar = () => {
     <div className="p-4 border-r border-slate-500 flex flex-col">
       <ConvoSearch />
       <Title />
-      <Conversations />
+      <Chats />
       <Button text="Logout" loading={loading} click={logout} />
     </div>
   )

@@ -2,6 +2,14 @@ import mongoose from "mongoose";
 
 const convoSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      default: "",
+    },
+    profilePic: {
+      type: String,
+      default: "",
+    },
     participants: [
       {
         type: mongoose.Schema.Types.ObjectId,

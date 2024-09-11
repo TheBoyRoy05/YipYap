@@ -4,9 +4,8 @@ import path from "path";
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/authRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
 import friendRoutes from "./routes/friendRoutes.js";
-import messageRoutes from "./routes/messageRoutes.js";
+import conversationRoutes from "./routes/conversationRoutes.js";
 
 import connectDatabase from "./database/connect.js";
 import { app, server } from "./socket.js";
@@ -19,9 +18,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
 app.use("/api/friends", friendRoutes);
-app.use("/api/messages", messageRoutes);
+app.use("/api/conversation", conversationRoutes);
 
 app.use(express.static(path.join(_dirname, "frontend/dist")));
 

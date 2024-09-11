@@ -1,6 +1,6 @@
 import useConversation from "../../../Store/useConversation.ts";
 import { formatDateTime } from "../../../Utils/Functions.ts";
-import { MessageType } from "../../../Utils/Types.ts";
+import { emptyUser, MessageType } from "../../../Utils/Types.ts";
 
 interface MessageProps {
   first: boolean;
@@ -9,8 +9,8 @@ interface MessageProps {
 
 const Message = ({first, message}: MessageProps) => {
   const { date, time } = formatDateTime(message.createdAt);
-  const { authUser, receiver } = useConversation();
-  const sender = message.senderID === authUser._id ? authUser : receiver;
+  const { conversation } = useConversation();
+  const sender = conversation.participants.find((p) => p._id === message.senderID) || emptyUser;
 
   return (
     <div className={`flex items-center hover:bg-gray-800 group ${first ? "mt-2" : ""}`}>

@@ -2,14 +2,12 @@ import { useRef, useState } from "react";
 import { IoMdSearch } from "react-icons/io";
 import useSearch from "../../Hooks/useSearch";
 import { IoArrowBack } from "react-icons/io5";
-import useConversation from "../../Store/useConversation";
 
 const ConvoSearch = () => {
-  const { search } = useSearch();
+  const { convoSearch } = useSearch();
   const [text, setText] = useState("");
   const [focused, setFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { setConversations } = useConversation();
 
   const handleButtonClick = () => {
     if (inputRef.current) {
@@ -21,7 +19,7 @@ const ConvoSearch = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
-    search(e.target.value, setConversations);
+    convoSearch(e.target.value);
   }
 
   return (

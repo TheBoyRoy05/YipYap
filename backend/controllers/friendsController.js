@@ -5,17 +5,17 @@ export const getFriends = async (req, res) => {
   try {
     const userID = req.user._id;
     const user = await User.findById(userID).populate("friends").lean();
-
+    
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-
+    
     res.status(200).json(user.friends || []);
   } catch (error) {
     console.error("Error in getFriends controller:", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
-};
+}
 
 export const getFriendRequests = async (req, res) => {
   try {
@@ -40,7 +40,7 @@ export const getFriendRequests = async (req, res) => {
 export const sendFriendRequest = async (req, res) => {
   try {
     const senderID = req.user._id;
-    const { username } = req.params;
+    const { username } = req.query;
 
     // Find receiver by username
     const receiver = await User.findOne({ username }).select("_id").lean();
@@ -61,7 +61,7 @@ export const sendFriendRequest = async (req, res) => {
     
     if (request) {
       await request.save();
-      res.status(201).json({ message: "Friend request sent" });
+      res.status(201).json({ request });
     }
   } catch (error) {
     console.error("Error in sendFriendRequest controller:", error.message);
