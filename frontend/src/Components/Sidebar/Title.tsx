@@ -4,7 +4,7 @@ import useConversation from "../../Store/useConversation";
 import { emptyConversation } from "../../Utils/Types";
 
 const Title = () => {
-  const { showFriendsPage, toggleFriendsPage } = useFriends();
+  const { showFriendsPage, setShowFriendsPage } = useFriends();
   const { setConversation } = useConversation();
   const btnClass = `btn btn-sm border-0 px-2 text-xl rounded-md hover:bg-blue-500 hover:text-white flex items-center justify-center ml-2`;
   const friendsBtn = showFriendsPage ? "bg-blue-500 text-white" : "bg-opacity-0";
@@ -12,7 +12,7 @@ const Title = () => {
 
   const handleFriendsClick = () => {
     if (!showFriendsPage) setConversation(emptyConversation);
-    toggleFriendsPage();
+    setShowFriendsPage(prev => !prev);
   };
 
   return (

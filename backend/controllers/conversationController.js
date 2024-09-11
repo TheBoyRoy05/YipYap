@@ -19,7 +19,10 @@ export const createConversation = async (req, res) => {
 export const getMyConversations = async (req, res) => {
   try {
     const userID = req.user._id;
-    const conversations = await Conversation.find({ participants: userID }).lean();
+    const conversations = await Conversation.find({ participants: userID })
+      .populate("messages")
+      .populate("participants")
+      .lean();
     res.status(200).json(conversations);
   } catch (error) {
     console.error("Error in getConversation controller: ", error.message);
@@ -33,7 +36,8 @@ export const getConversation = async (req, res) => {
 
     const conversation = await Conversation.findById(convoID)
       .populate("messages")
-      .populate("participants");
+      .populate("participants")
+      .lean();
     if (!conversation) return res.status(404).json({ error: "Conversation not found" });
 
     res.status(200).json(conversation);

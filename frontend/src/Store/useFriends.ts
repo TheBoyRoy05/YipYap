@@ -1,21 +1,19 @@
 import { create } from "zustand";
 import { UserType } from "../Utils/Types";
+import { createSetter } from "../Utils/Functions";
 
 interface FriendsType {
-  showFriendsPage: boolean;
-  toggleFriendsPage: () => void;
-  setShowFriendsPage: (showFriendsPage: boolean) => void;
   friends: UserType[];
-  setFriends: (friends: UserType[]) => void;
+  showFriendsPage: boolean;
+  setFriends: (friends: UserType[] | ((prev: UserType[]) => UserType[])) => void;
+  setShowFriendsPage: (showFriendsPage: boolean | ((prev: boolean) => boolean)) => void;
 }
 
 const useFriends = create<FriendsType>((set) => ({
-  showFriendsPage: false,
-  toggleFriendsPage: () =>
-    set((state) => ({ showFriendsPage: !state.showFriendsPage })),
-  setShowFriendsPage: (showFriendsPage: boolean) => set({ showFriendsPage }),
   friends: [],
-  setFriends: (friends: UserType[]) => set({ friends }),
+  showFriendsPage: false,
+  setFriends: createSetter<FriendsType>(set)("friends"),
+  setShowFriendsPage: createSetter<FriendsType>(set)("showFriendsPage"),
 }));
 
 export default useFriends;

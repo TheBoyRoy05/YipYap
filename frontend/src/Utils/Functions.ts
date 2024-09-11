@@ -1,6 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const randInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min)) + min;
-}
+};
+
+// Helper function to handle both direct values and callbacks (Thanks ChatGPT)
+export const createSetter =
+  <StoreType>(set: any) =>
+  <T extends keyof StoreType>(key: T) =>
+  (value: StoreType[T] | ((prev: StoreType[T]) => StoreType[T])) =>
+    set((state: StoreType) => ({
+      [key]:
+        typeof value === "function"
+          ? (value as (prev: StoreType[T]) => StoreType[T])(state[key])
+          : value,
+    }));
 
 export const formatDateTime = (dateTime: string) => {
   const options: Intl.DateTimeFormatOptions = {
@@ -34,11 +47,7 @@ export const formatDateTime = (dateTime: string) => {
   const yesterdayDate = formattedYesterday.split(", ")[0];
 
   const date =
-    sentDate === todayDate
-      ? "Today at"
-      : sentDate === yesterdayDate
-      ? "Yesterday at"
-      : sentDate;
+    sentDate === todayDate ? "Today at" : sentDate === yesterdayDate ? "Yesterday at" : sentDate;
 
   return { date, time: sentTime };
 };
