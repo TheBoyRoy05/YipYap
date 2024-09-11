@@ -1,9 +1,11 @@
 import useGetMyConversations from "../../Hooks/Conversation/useGetMyConversations.ts";
+import useConversation from "../../Store/useConversation.ts";
 import Chat from "./Chat.tsx";
 import GroupChat from "./GroupChat.tsx";
 
 const Chats = () => {
-  const { loading, myConversations } = useGetMyConversations();
+  const { loading } = useGetMyConversations();
+  const { myConversations } = useConversation();
 
   return (
     <div className="flex-grow flex flex-col overflow-y-auto dark-scrollbar">

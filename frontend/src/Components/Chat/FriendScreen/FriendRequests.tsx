@@ -1,7 +1,6 @@
 import useGetRequests from "../../../Hooks/Friends/useGetRequests";
 import useFriends from "../../../Store/useFriends";
-import FriendCard from "./FriendCard";
-import FriendItem from "./FriendItem";
+import Friend from "./Friend";
 
 const FriendRequests = () => {
   const { layout } = useFriends();
@@ -20,33 +19,25 @@ const FriendRequests = () => {
         </div>
       ) : (
         <div className="flex-grow">
-          {incoming.length > 0 ? (
-            <p className="mx-12 mb-4 py-2 border-b-2 text-white text-xl font-bold">Incoming</p>
-          ) : (
-            <></>
+          {incoming.length > 0 && (
+            <p className="mx-12 mb-4 py-2 border-b-2 text-white text-xl font-bold">
+              Incoming Requests
+            </p>
           )}
           <div className={style}>
-            {incoming.map((request, index) =>
-              layout === "grid" ? (
-                <FriendCard key={index} user={request.senderID} isIncomingRequest={true} />
-              ) : (
-                <FriendItem key={index} user={request.senderID} isIncomingRequest={true} />
-              )
-            )}
+            {incoming.map((request, index) => (
+              <Friend key={index} data={request} requestType="incoming" />
+            ))}
           </div>
-          {outgoing.length > 0 ? (
-            <p className="mx-12 mb-4 py-2 border-b-2 text-white text-xl font-bold">Outgoing</p>
-          ) : (
-            <></>
+          {outgoing.length > 0 && (
+            <p className="mx-12 mb-4 py-2 border-b-2 text-white text-xl font-bold">
+              Outgoing Requests
+            </p>
           )}
           <div className={style}>
-            {outgoing.map((request, index) =>
-              layout === "grid" ? (
-                <FriendCard key={index} user={request.receiverID} isIncomingRequest={false} />
-              ) : (
-                <FriendItem key={index} user={request.receiverID} isIncomingRequest={false} />
-              )
-            )}
+            {outgoing.map((request, index) => (
+              <Friend key={index} data={request} requestType="outgoing" />
+            ))}
           </div>
         </div>
       )}

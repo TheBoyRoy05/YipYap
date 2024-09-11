@@ -1,7 +1,6 @@
 import useFriends from "../../../Store/useFriends";
-import FriendItem from "./FriendItem";
-import FriendCard from "./FriendCard";
 import useGetFriends from "../../../Hooks/Friends/useGetFriends";
+import Friend from "./Friend";
 
 const Friends = () => {
   const { loading, friends } = useGetFriends();
@@ -18,13 +17,7 @@ const Friends = () => {
           <span className="loading loading-bars loading-lg" />
         </div>
       ) : (
-        friends.map((friend, index) =>
-          layout === "grid" ? (
-            <FriendCard key={index} user={friend} />
-          ) : (
-            <FriendItem key={index} user={friend} />
-          )
-        )
+        friends.map((friend, index) => <Friend key={index} data={friend} />)
       )}
     </div>
   );

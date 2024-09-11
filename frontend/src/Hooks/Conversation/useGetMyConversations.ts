@@ -4,7 +4,7 @@ import useConversation from "../../Store/useConversation.ts";
 
 const useGetMyConversations = () => {
   const [loading, setLoading] = useState(false);
-  const { myConversations, setMyConversations } = useConversation();
+  const { setMyConversations } = useConversation();
 
   useEffect(() => {
     const getMyConversations = async () => {
@@ -33,7 +33,7 @@ const useGetMyConversations = () => {
     getMyConversations();
   }, [setMyConversations]);
 
-  return { loading, myConversations };
+  return { loading };
 };
 
 export default useGetMyConversations;

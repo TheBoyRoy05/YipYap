@@ -26,14 +26,14 @@ export interface ConversationType {
   messages: MessageType[];
 }
 
-interface IncomingFriendRequestType {
+export interface IncomingFriendRequestType {
   _id: string;
   __v: number;
   senderID: UserType;
   receiverID: string;
 }
 
-interface OutgoingFriendRequestType {
+export interface OutgoingFriendRequestType {
   _id: string;
   __v: number;
   senderID: string;

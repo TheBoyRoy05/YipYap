@@ -46,23 +46,26 @@ export const sendFriendRequest = async (req, res) => {
     // Find receiver by username
     const receiver = await User.findOne({ username }).select("_id").lean();
     if (!receiver) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "Yapper not found" });
     }
 
     const receiverID = receiver._id;
 
     // Check if a friend request already exists
-    const existingRequest = await FriendRequest.findOne({ senderID, receiverID }).lean();
-    if (existingRequest) {
+    const [youAlreadySent, theyAlreadySent] = await Promise.all([
+      FriendRequest.findOne({ senderID, receiverID }).lean(),
+      FriendRequest.findOne({ senderID: receiverID, receiverID: senderID }).lean(),
+    ]);
+    if (youAlreadySent || theyAlreadySent) {
       return res.status(400).json({ error: "Friend request already sent" });
     }
 
     // Create a new friend request
-    const request = new FriendRequest({ senderID, receiverID });
+    let request = await FriendRequest.create({ senderID, receiverID });
 
     if (request) {
-      await request.save();
-      res.status(201).json({ message: "Friend request sent" });
+      request = await FriendRequest.findById(request._id).populate("receiverID").lean();
+      res.status(201).json(request);
     }
   } catch (error) {
     console.error("Error in sendFriendRequest controller:", error.message);
@@ -76,34 +79,39 @@ export const handleFriendRequest = async (req, res) => {
     const { id } = req.params;
     const { action } = req.query;
 
-    // Find the friend request and delete it
+    // Find the friend request
     const request = await FriendRequest.findById(id).lean();
 
     if (!request) return res.status(404).json({ error: "Friend request not found" });
-    if (![request.senderID, request.receiverID].includes(userID)) {
-      return res.status(403).json({ error: "Unauthorized" });
+    if (![request.senderID.toString(), request.receiverID.toString()].includes(userID.toString())) {
+      return res
+        .status(403)
+        .json({ error: `Unauthorized ${request.senderID}, ${request.receiverID}, ${userID}` });
     }
 
-    await FriendRequest.findByIdAndDelete(request._id);
-
+    let conversation;
     if (action === "accept") {
-      const conversation = await Conversation.create({ participants: [userID, senderID] });
+      conversation = await Conversation.create({ participants: [userID, request.senderID] });
+      conversation = await Conversation.findById(conversation._id)
+        .populate("participants")
+        .populate("messages")
+        .lean();
 
       // Add friends, and create conversation between the two users
       await Promise.all([
         User.findByIdAndUpdate(userID, {
-          $push: { friends: senderID, conversations: conversation._id },
+          $push: { friends: request.senderID, conversations: conversation._id },
         }),
-        User.findByIdAndUpdate(senderID, {
+        User.findByIdAndUpdate(request.senderID, {
           $push: { friends: userID, conversations: conversation._id },
         }),
       ]);
     }
 
-    const word = action === "accept" ? "accepted" : action === "decline" ? "declined" : "canceled";
-    res.status(200).json({ message: `Friend request ${word}` });
+    await FriendRequest.findByIdAndDelete(request._id);
+    res.status(200).json(conversation);
   } catch (error) {
-    console.error("Error in handleFriendRequest controller:", error.message);
+    console.error("Error in handleFriendRequest controller:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

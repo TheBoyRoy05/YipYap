@@ -1,8 +1,11 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { FriendRequestsType } from "../../Utils/Types";
+import useFriends from "../../Store/useFriends";
 
 const useSendRequest = () => {
   const [loading, setLoading] = useState(false);
+  const { setRequests } = useFriends();
 
   const sendFriendRequest = async (username: string) => {
     setLoading(true);
@@ -18,7 +21,11 @@ const useSendRequest = () => {
 
       const request = await res.json();
       if (request.error) throw new Error(request.error);
-      if (request.message) toast.success(request.message);
+      setRequests((prev: FriendRequestsType) => ({
+        ...prev,
+        outgoing: [...prev.outgoing, request],
+      }));
+      toast.success("Friend request sent!");
     } catch (error) {
       console.error(error);
       toast.error(error instanceof Error ? error.message : "An unexpected error occurred");

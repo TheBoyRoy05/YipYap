@@ -7,9 +7,11 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import useSocketConnection from "../Hooks/useSocketConnection.ts";
 import { useEffect } from "react";
 import { emptyConversation } from "../Utils/Types.ts";
+import useFriends from "../Store/useFriends.ts";
 
 const App = () => {
   const { authUser, setAuthUser, setConversation } = useConversation();
+  const { setShowFriendsPage, setAddingFriends } = useFriends();
   useSocketConnection(authUser);
 
   // Save user on reload
@@ -22,8 +24,10 @@ const App = () => {
   useEffect(() => {
     return () => {
       setConversation(emptyConversation);
+      setShowFriendsPage(false);
+      setAddingFriends(false);
     };
-  }, [setConversation]);
+  }, [setAddingFriends, setConversation, setShowFriendsPage]);
 
   return (
     <div className="p-4 h-screen flex items-center justify-center">

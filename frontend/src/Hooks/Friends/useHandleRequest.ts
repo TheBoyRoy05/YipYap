@@ -1,8 +1,12 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import useFriends from "../../Store/useFriends";
+import useConversation from "../../Store/useConversation";
 
 const useHandleRequest = () => {
   const [loading, setLoading] = useState(false);
+  const { setRequests } = useFriends();
+  const { setMyConversations } = useConversation();
   type ActionType = "accept" | "decline" | "cancel";
 
   const handleFriendRequest = async (requestID: string, action: ActionType) => {
@@ -17,9 +21,18 @@ const useHandleRequest = () => {
         },
       });
 
-      const request = await res.json();
-      if (request.error) throw new Error(request.error);
-      if (request.message) toast.success(request.message);
+      const conversation = await res.json();
+      if (conversation.error) throw new Error(conversation.error);
+
+      setRequests((prev) => ({
+        incoming: prev.incoming.filter((incomingRequest) => incomingRequest._id != requestID),
+        outgoing: prev.outgoing.filter((outgoingRequest) => outgoingRequest._id != requestID),
+      }));
+
+      if (action == "accept") setMyConversations((prev) => [conversation, ...prev]);
+
+      const word = action == "accept" ? "accepted" : action == "decline" ? "declined" : "canceled";
+      toast.success(`Friend request ${word}!`);
     } catch (error) {
       console.error(error);
       toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
@@ -28,7 +41,7 @@ const useHandleRequest = () => {
     }
   };
 
-  return { loading, sendFriendRequest: handleFriendRequest };
+  return { loading, handleFriendRequest };
 };
 
 export default useHandleRequest;

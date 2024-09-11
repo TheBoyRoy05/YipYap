@@ -22,14 +22,16 @@ export const getMyConversations = async (req, res) => {
     
     const user = await User.findById(userID).populate({
       path: "conversations",
-       populate: {
-        path: "participants",
-        model: "User",
-       },
-       populate: {
-        path: "messages",
-        model: "Message",
-       }
+      populate: [
+        {
+          path: "participants",
+          model: "User",
+        },
+        {
+          path: "messages",
+          model: "Message",
+        }
+      ]
     }).lean();
 
     if (!user) {
