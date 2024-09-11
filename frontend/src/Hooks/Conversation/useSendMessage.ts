@@ -6,25 +6,25 @@ const useSendMessage = () => {
   const [loading, setLoading] = useState(false);
   const { conversation, setConversation } = useConversation();
 
-  const sendMessage = async (messageStr: string) => {
+  const sendMessage = async (message: string) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("jwt");
-      const res = await fetch(`/api/send-message/${conversation._id}`, {
+      const res = await fetch(`/api/conversation/send-message/${conversation._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ messageStr }),
+        body: JSON.stringify({ message }),
       });
 
-      const message = await res.json();
-      if (message.error) throw new Error(message.error);
+      const messageRes = await res.json();
+      if (messageRes.error) throw new Error(messageRes.error);
 
       setConversation((prevConvo) => ({
         ...prevConvo,
-        messages: [...prevConvo.messages, message],
+        messages: [...prevConvo.messages, messageRes],
       }));
     } catch (error) {
       console.error(error);
