@@ -1,11 +1,13 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import useConversation from "../../Store/useConversation";
-import { emptyUser } from "../../Utils/Types";
+import { emptyConversation, emptyUser } from "../../Utils/Types";
+import useFriends from "../../Store/useFriends";
 
 const useLogout = () => {
   const [loading, setLoading] = useState(false);
-  const { setAuthUser } = useConversation();
+  const { setAuthUser, setConversation } = useConversation();
+  const { setShowFriendsPage, setAddingFriends } = useFriends();
 
   const logout = async () => {
     setLoading(true);
@@ -22,6 +24,9 @@ const useLogout = () => {
       localStorage.removeItem("chat-user");
 
       setAuthUser(emptyUser);
+      setConversation(emptyConversation);
+      setShowFriendsPage(false);
+      setAddingFriends(false);
     } catch (error) {
       console.error(error);
       toast.error(
