@@ -32,7 +32,7 @@ const ChatScreen = () => {
           </div>
         </div>
         <span className="text-white font-bold text-xl">
-          {isGroupChat ? conversation.name : receiver.fullName}
+          {conversation.name}
         </span>
       </div>
       <Messages />

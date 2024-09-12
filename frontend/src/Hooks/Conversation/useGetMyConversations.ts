@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import useConversation from "../../Store/useConversation.ts";
+import { ConversationType } from "../../Utils/Types.ts";
 
 const useGetMyConversations = () => {
   const [loading, setLoading] = useState(false);
-  const { setMyConversations } = useConversation();
+  const { authUser, setMyConversations } = useConversation();
 
   useEffect(() => {
     const getMyConversations = async () => {
@@ -20,7 +21,20 @@ const useGetMyConversations = () => {
 
         const conversations = await res.json();
         if (conversations.error) throw new Error(conversations.error);
-        
+
+        conversations.forEach((conversation: ConversationType) => {
+          if (conversation.participants.length <= 2) {
+            const receiver = conversation.participants.find(
+              (participant) => participant._id !== authUser._id
+            );
+
+            if (receiver) {
+              conversation.name = receiver.fullName;
+              conversation.profilePic = receiver.profilePic;
+            }
+          }
+        });
+
         setMyConversations(conversations);
       } catch (error) {
         console.error(error);

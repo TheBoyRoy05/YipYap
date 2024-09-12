@@ -1,9 +1,8 @@
 import useGetMyConversations from "../../Hooks/Conversation/useGetMyConversations.ts";
 import useConversation from "../../Store/useConversation.ts";
-import Chat from "./Chat.tsx";
-import GroupChat from "./GroupChat.tsx";
+import Conversation from "./Conversation.tsx";
 
-const Chats = () => {
+const Conversations = () => {
   const { loading } = useGetMyConversations();
   const { myConversations } = useConversation();
 
@@ -15,15 +14,11 @@ const Chats = () => {
         </div>
       ) : (
         myConversations.map((conversation, index) =>
-          conversation.participants.length > 2 ? (
-            <GroupChat key={index} conversation={conversation} numNotifs={0} />
-          ) : (
-            <Chat key={index} conversation={conversation} numNotifs={0} />
-          )
+            <Conversation key={index} conversation={conversation} numNotifs={0} />
         )
       )}
     </div>
   );
 };
 
-export default Chats;
+export default Conversations;
