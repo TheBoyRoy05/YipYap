@@ -15,11 +15,7 @@ const ConvoSearch = () => {
       setFocused((prev) => !prev);
     }
   };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
-  };
-
+  
   return (
     <form className="flex w-72 h-12 bg-gray-800 rounded-2xl px-2 text-lg">
       <button
@@ -35,7 +31,7 @@ const ConvoSearch = () => {
         placeholder="Search..."
         value={searchText}
         ref={inputRef}
-        onChange={handleChange}
+        onChange={(e) => setSearchText(e.target.value)}
       />
     </form>
   );

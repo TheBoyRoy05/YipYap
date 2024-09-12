@@ -1,9 +1,13 @@
 import useFriends from "../../../Store/useFriends";
-import useGetFriends from "../../../Hooks/Friends/useGetFriends";
+import { UserType } from "../../../Utils/Types";
 import Friend from "./Friend";
 
-const Friends = () => {
-  const { loading, friends } = useGetFriends();
+interface FriendsProps {
+  loading: boolean;
+  friends: UserType[];
+}
+
+const Friends = ({ loading, friends }: FriendsProps) => {
   const { layout } = useFriends();
   const style =
     layout === "grid" && !loading

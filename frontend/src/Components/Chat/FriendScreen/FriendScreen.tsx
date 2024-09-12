@@ -4,13 +4,22 @@ import Friends from "./Friends";
 import LayoutSelect from "./LayoutSelect";
 import useFriends from "../../../Store/useFriends";
 import FriendRequests from "./FriendRequests";
+import useGetFriends from "../../../Hooks/Friends/useGetFriends";
+import { useEffect, useState } from "react";
 
 const FriendScreen = () => {
-  const { addingFriends, setAddingFriends } = useFriends();
+  const { loading, friends } = useGetFriends();
+  const [filteredFriends, setFilteredFriends] = useState(friends);
+  const { addingFriends, setAddingFriends, searchText } = useFriends();
+
+  useEffect(() => {
+    setFilteredFriends(
+      friends.filter((friend) => friend.fullName.toLowerCase().includes(searchText.toLowerCase()))
+    );
+  }, [friends, searchText]);
+
   const headerBg = addingFriends ? "bg-blue-500" : "bg-slate-500 bg-opacity-30";
-  const btnBg = addingFriends
-    ? "bg-slate-700 hover:bg-slate-800"
-    : "bg-blue-500 hover:bg-blue-600";
+  const btnBg = addingFriends ? "bg-slate-700 hover:bg-slate-800" : "bg-blue-500 hover:bg-blue-600";
 
   return (
     <div className="flex flex-col w-full h-fit">
@@ -28,7 +37,7 @@ const FriendScreen = () => {
         <FriendSearch />
         <LayoutSelect />
       </div>
-      {addingFriends ? <FriendRequests /> : <Friends />}
+      {addingFriends ? <FriendRequests /> : <Friends loading={loading} friends={filteredFriends} />}
     </div>
   );
 };

@@ -1,12 +1,10 @@
 import React, { useRef, useState } from "react";
 import { IoMdSearch } from "react-icons/io";
 import { IoArrowBack } from "react-icons/io5";
-import useSearch from "../../../Hooks/useSearch";
 import useFriends from "../../../Store/useFriends";
 import useSendRequest from "../../../Hooks/Friends/useSendRequest";
 
 const FriendSearch = () => {
-  const { friendSearch } = useSearch();
   const { addingFriends, searchText, setSearchText } = useFriends();
   const { loading, sendFriendRequest } = useSendRequest();
 
@@ -19,11 +17,6 @@ const FriendSearch = () => {
       else inputRef.current.focus();
       setFocused((prev) => !prev);
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
-    if (!addingFriends) friendSearch(e.target.value);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,7 +46,7 @@ const FriendSearch = () => {
         }`}
         value={searchText}
         ref={inputRef}
-        onChange={handleChange}
+        onChange={(e) => setSearchText(e.target.value)}
       />
       {addingFriends ? (
         <button
