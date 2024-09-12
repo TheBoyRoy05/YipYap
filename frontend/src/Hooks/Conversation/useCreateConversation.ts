@@ -4,9 +4,9 @@ import useConversation from "../../Store/useConversation";
 
 const useCreateConversation = () => {
   const [loading, setLoading] = useState(false);
-  const { setConversation } = useConversation();
+  const { setConversation, setMyConversations } = useConversation();
 
-  const createConversation = async (participants: string[]) => {
+  const createConversation = async (participantIDs: string[]) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("jwt");
@@ -16,13 +16,14 @@ const useCreateConversation = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ participants }),
+        body: JSON.stringify({ participantIDs }),
       });
 
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      const conversation = await res.json();
+      if (conversation.error) throw new Error(conversation.error);
 
-      setConversation(data);
+      setMyConversations((prevConversations) => [conversation, ...prevConversations]);
+      setConversation(conversation);
     } catch (error) {
       console.error(error);
       toast.error(error instanceof Error ? error.message : "An unexpected error occurred");

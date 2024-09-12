@@ -2,12 +2,12 @@
 import { useEffect } from "react";
 import useSocket from "../../Store/useSocket";
 import useConversation from "../../Store/useConversation";
-import { MessageType } from "../../Utils/Types";
+import { ConversationType, MessageType } from "../../Utils/Types";
 import Quack from "../../assets/Sounds/quack_5.mp3";
 
-const useListenMessages = () => {
+const useListenConversation = () => {
   const { socket } = useSocket();
-  const { conversation, setConversation } = useConversation();
+  const { conversation, setConversation, setMyConversations } = useConversation();
 
   useEffect(() => {
     const sound = new Audio(Quack);
@@ -19,15 +19,22 @@ const useListenMessages = () => {
           messages: [...prevConvo.messages, message],
         }));
       }
-      
+
       sound.currentTime = 0;
       sound.play();
     });
 
+    socket?.on("newGroupChat", (conversation: ConversationType) => {
+      setMyConversations((prevConversations) => [conversation, ...prevConversations]);
+    });
+
     return () => {
-      if (socket) socket.off("newMessage");
+      if (socket) {
+        socket.off("newMessage");
+        socket.off("newGroupChat");
+      }
     };
   }, [socket]);
 };
 
-export default useListenMessages;
+export default useListenConversation;

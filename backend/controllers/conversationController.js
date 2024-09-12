@@ -6,10 +6,32 @@ import User from "../models/userModel.js";
 // TODO: convert participants from string[] to mongoose.Types.ObjectId[]
 export const createConversation = async (req, res) => {
   try {
-    const { participants } = req.body;
-    const newConversation = new Conversation({ participants });
-    await newConversation.save();
-    res.status(201).json(newConversation);
+    const senderID = req.user._id;
+    const { participantIDs } = req.body;
+
+    const newConversation = await Conversation.create({
+      participants: [...participantIDs, senderID],
+    });
+
+    const populatedConvo = await Conversation.findById(newConversation._id)
+      .populate("messages")
+      .populate("participants")
+      .lean();
+
+    for (const participantID of newConversation.participants) {
+      await User.findByIdAndUpdate(participantID, {
+        $push: { conversations: newConversation._id },
+      });
+
+      if (participantID.toString() !== senderID.toString()) {
+        const participantSocketID = getReceiverSocketID(participantID);
+        if (participantSocketID) {
+          io.to(participantSocketID).emit("newGroupChat", populatedConvo);
+        }
+      }
+    }
+
+    res.status(201).json(populatedConvo);
   } catch (error) {
     console.error("Error in createConversation controller: ", error.message);
     res.status(500).json({ error: "Internal server error" });

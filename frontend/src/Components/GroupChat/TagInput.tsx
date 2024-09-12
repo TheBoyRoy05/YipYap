@@ -9,7 +9,7 @@ const TagInput = () => {
   };
 
   return (
-    <div className="flex items-center bg-gray-700 rounded-lg px-2">
+    <div className="flex flex-wrap gap-y-2 items-center bg-gray-700 rounded-lg p-2">
       {selectedFriends.map((friend, index) => (
         <span key={index} className="flex items-center bg-gray-800 px-2 py-1 rounded mr-2">
           {friend.fullName}
@@ -22,8 +22,8 @@ const TagInput = () => {
         type="text"
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
-        className="flex-grow bg-transparent placeholder-slate-500 text-box p-2"
-        placeholder="Create Yap Session..."
+        className="flex-grow bg-transparent placeholder-slate-500 text-box py-1 px-2 text-lg"
+        placeholder="Type the name of a friend"
       />
     </div>
   );

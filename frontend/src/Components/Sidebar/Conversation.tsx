@@ -3,7 +3,7 @@ import useConversation from "../../Store/useConversation";
 import { ConversationType, emptyUser } from "../../Utils/Types";
 import useFriends from "../../Store/useFriends";
 import { FaUserFriends } from "react-icons/fa";
-import { randInt } from "../../Utils/Functions";
+import { getConversationName, hashIDToColor } from "../../Utils/Functions";
 
 interface ChatProps {
   conversation: ConversationType;
@@ -35,8 +35,11 @@ const Conversation = ({ conversation, numNotifs }: ChatProps) => {
       className={`flex gap-3 items-center border-b px-2 py-3 cursor-pointer group text-left ${bgColor}`}
     >
       {isGroupChat ? (
-        <div className="p-4" style={{ backgroundColor: `hsl(${randInt(0, 360)}, 60%, 60%)` }}>
-          <FaUserFriends />
+        <div
+          className="flex justify-center items-center w-10 h-10 rounded-full"
+          style={{ backgroundColor: hashIDToColor(conversation._id) }}
+        >
+          <FaUserFriends className="text-white" />
         </div>
       ) : (
         <div className={`avatar ${online ? "online" : ""}`}>
@@ -45,9 +48,9 @@ const Conversation = ({ conversation, numNotifs }: ChatProps) => {
           </div>
         </div>
       )}
-      <div className="flex flex-col flex-1">
-        <p className={`text-lg leading-5 group-hover:text-white ${nameColor}`}>
-          {conversation.name}
+      <div className="flex flex-col flex-1 max-w-[220px]">
+        <p className={`text-lg leading-6 group-hover:text-white ${nameColor} truncate`}>
+          {getConversationName(conversation, authUser)}
         </p>
         <span className={`text-sm group-hover:text-gray-200 ${statusColor}`}>
           {isGroupChat ? `${conversation.participants.length} members` : "status"}

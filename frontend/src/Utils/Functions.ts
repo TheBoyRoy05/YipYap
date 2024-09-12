@@ -1,6 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const randInt = (min: number, max: number) => {
-  return Math.floor(Math.random() * (max - min)) + min;
+import { ConversationType, UserType } from "./Types";
+
+export const hashIDToColor = (ID: string) => {
+  let hash = 0;
+  
+  for (let i = 0; i < ID.length; i++) {
+    hash = (hash << 5) - hash + ID.charCodeAt(i);
+    hash |= 0; // Convert to 32-bit integer
+  }
+  
+  return `hsla(${Math.abs(hash % 360)}deg, 60%, 60%)`;
+};
+
+export const getConversationName = (conversation: ConversationType, authUser: UserType) => {
+  return (
+    conversation.name ||
+    conversation.participants
+      .filter((p) => p._id != authUser._id)
+      .map((p) => p.fullName)
+      .join(", ")
+  );
 };
 
 // Helper function to handle both direct values and callbacks (Thanks ChatGPT)

@@ -1,12 +1,12 @@
 import { useEffect, useRef } from "react";
 import Message from "./Message";
-import useListenMessages from "../../../Hooks/Conversation/useListenMessages";
+import useListenConversation from "../../../Hooks/Conversation/useListenConversation";
 import useConversation from "../../../Store/useConversation";
 
 const Messages = () => {
   const { conversation } = useConversation();
   const lastMessage = useRef<HTMLDivElement>(null);
-  useListenMessages();
+  useListenConversation();
 
   useEffect(() => {
     setTimeout(() => {

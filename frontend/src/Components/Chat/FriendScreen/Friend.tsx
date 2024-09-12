@@ -8,6 +8,7 @@ import {
   OutgoingFriendRequestType,
   UserType,
 } from "../../../Utils/Types";
+import useGroupChat from "../../../Store/useGroupChat";
 
 interface FriendProps {
   data: UserType | IncomingFriendRequestType | OutgoingFriendRequestType;
@@ -16,6 +17,8 @@ interface FriendProps {
 }
 
 const Friend = ({ data, requestType, layoutType }: FriendProps) => {
+  const { selectedFriends } = useGroupChat();
+
   let { layout } = useFriends();
   layout = layoutType || layout;
 
@@ -26,11 +29,8 @@ const Friend = ({ data, requestType, layoutType }: FriendProps) => {
       ? (data as OutgoingFriendRequestType).receiverID
       : (data as UserType);
 
-  const paddingStyle = requestType == "incoming"
-      ? "pl-4 pr-2"
-      : requestType == "outgoing"
-      ? "px-4"
-      : "px-4 py-2"
+  const paddingStyle =
+    requestType == "incoming" ? "pl-4 pr-2" : requestType == "outgoing" ? "px-4" : "px-4 py-2";
   const containerStyle =
     layout == "grid"
       ? "px-4 overflow-visible mt-10 text-center"
@@ -55,7 +55,14 @@ const Friend = ({ data, requestType, layoutType }: FriendProps) => {
         </p>
         <span className={`${layout == "grid" ? "text-lg" : "text-md"}`}>{"status"}</span>
       </div>
-      {requestType == "incoming" ? (
+      {layoutType ? (
+        <input
+          type="checkbox"
+          className="checkbox"
+          onChange={() => {}}
+          checked={selectedFriends.some((friend) => friend._id === user._id)}
+        />
+      ) : requestType == "incoming" ? (
         <RequestOptions request={data as IncomingFriendRequestType} />
       ) : requestType == "outgoing" ? (
         <CancelRequest request={data as OutgoingFriendRequestType} />

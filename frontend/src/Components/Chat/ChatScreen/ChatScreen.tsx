@@ -4,7 +4,7 @@ import useSocket from "../../../Store/useSocket";
 import { emptyUser } from "../../../Utils/Types";
 import Input from "./Input";
 import Messages from "./Messages";
-import { randInt } from "../../../Utils/Functions";
+import { getConversationName, hashIDToColor } from "../../../Utils/Functions";
 
 const ChatScreen = () => {
   const { authUser, conversation } = useConversation();
@@ -17,22 +17,25 @@ const ChatScreen = () => {
   return (
     <div className="flex-grow md:min-w-[450px] flex flex-col">
       <div className="bg-slate-500 px-4 py-3 flex items-center gap-4">
-        <div className={`avatar ${online ? "online" : ""}`}>
-          <div className="w-10 rounded-full border-2 border-white">
-            {isGroupChat && !conversation.profilePic ? (
-              <div className="p-4" style={{ backgroundColor: `hsl(${randInt(0, 360)}, 60%, 60%)` }}>
-                <FaUserFriends />
-              </div>
-            ) : (
+        {isGroupChat && !conversation.profilePic ? (
+          <div
+            className="flex justify-center items-center rounded-full w-10 h-10 text-white border-2 border-white"
+            style={{ backgroundColor: hashIDToColor(conversation._id) }}
+          >
+            <FaUserFriends />
+          </div>
+        ) : (
+          <div className={`avatar ${online ? "online" : ""}`}>
+            <div className="w-10 rounded-full border-2 border-white">
               <img
                 src={isGroupChat ? conversation.profilePic : receiver.profilePic}
                 alt="user avatar"
               />
-            )}
+            </div>
           </div>
-        </div>
+        )}
         <span className="text-white font-bold text-xl">
-          {conversation.name}
+          {getConversationName(conversation, authUser)}
         </span>
       </div>
       <Messages />
