@@ -26,6 +26,13 @@ export interface ConversationType {
   messages: MessageType[];
 }
 
+export interface FriendRequestType {
+  _id: string;
+  __v: number;
+  senderID: string;
+  receiverID: string;
+}
+
 export interface IncomingFriendRequestType {
   _id: string;
   __v: number;

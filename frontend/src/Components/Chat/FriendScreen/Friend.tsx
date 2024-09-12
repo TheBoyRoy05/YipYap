@@ -23,17 +23,22 @@ const Friend = ({ data, requestType = "" }: FriendProps) => {
       ? (data as OutgoingFriendRequestType).receiverID
       : (data as UserType);
 
+  const paddingStyle = requestType == "incoming"
+      ? "pl-4 pr-2"
+      : requestType == "outgoing"
+      ? "px-4"
+      : "px-4 py-2"
   const containerStyle =
     layout == "grid"
       ? "px-4 overflow-visible mt-10 text-center"
-      : `flex flex-row items-center gap-4 ${requestType == "incoming" ? "px-2" : "px-4"}`;
+      : `flex flex-row items-center gap-4`;
   const avatarStyle = layout == "grid" ? "mx-auto top-[-1.75rem] mb-[-1rem]" : "";
 
   const { onlineUserIDs } = useSocket();
   const online = onlineUserIDs.includes(user._id) ? "online" : "";
 
   return (
-    <div className={`card bg-base-100 ${containerStyle}`}>
+    <div className={`card bg-base-100 ${containerStyle} ${paddingStyle}`}>
       <div className={`avatar ${online} ${avatarStyle}`}>
         <div className={`${layout == "grid" ? "w-14" : "w-12"} rounded-full`}>
           <img src={user.profilePic} alt="user avatar" />
@@ -48,9 +53,9 @@ const Friend = ({ data, requestType = "" }: FriendProps) => {
         <span className={`${layout == "grid" ? "text-lg" : "text-md"}`}>{"status"}</span>
       </div>
       {requestType == "incoming" ? (
-        <RequestOptions request={(data as IncomingFriendRequestType)} />
+        <RequestOptions request={data as IncomingFriendRequestType} />
       ) : requestType == "outgoing" ? (
-        <CancelRequest request={(data as OutgoingFriendRequestType)}/>
+        <CancelRequest request={data as OutgoingFriendRequestType} />
       ) : (
         <YapOptions user={user} />
       )}

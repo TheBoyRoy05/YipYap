@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import Conversation from "../models/convoModel.js";
+import { getReceiverSocketID, io } from "../socket.js";
 import FriendRequest from "../models/friendRequestModel.js";
 
 export const getFriends = async (req, res) => {
@@ -44,11 +45,10 @@ export const sendFriendRequest = async (req, res) => {
     const { username } = req.query;
 
     // Find receiver by username
-    const receiver = await User.findOne({ username }).select("_id").lean();
+    const receiver = await User.findOne({ username }).lean();
     if (!receiver) {
       return res.status(404).json({ error: "Yapper not found" });
     }
-
     const receiverID = receiver._id;
 
     // Check if a friend request already exists
@@ -56,19 +56,27 @@ export const sendFriendRequest = async (req, res) => {
       FriendRequest.findOne({ senderID, receiverID }).lean(),
       FriendRequest.findOne({ senderID: receiverID, receiverID: senderID }).lean(),
     ]);
+
     if (youAlreadySent || theyAlreadySent) {
       return res.status(400).json({ error: "Friend request already sent" });
     }
 
     // Create a new friend request
-    let request = await FriendRequest.create({ senderID, receiverID });
+    const request = await FriendRequest.create({ senderID, receiverID });
+    const [incomingRequest, outgoingRequest] = await Promise.all([
+      FriendRequest.findById(request._id).populate("senderID").lean(),
+      FriendRequest.findById(request._id).populate("receiverID").lean(),
+    ]);
+
+    // Send a notification to the receiver if they are online
+    const receiverSocketID = getReceiverSocketID(receiverID);
+    if (receiverSocketID) io.to(receiverSocketID).emit(`newFriendRequest`, incomingRequest);
 
     if (request) {
-      request = await FriendRequest.findById(request._id).populate("receiverID").lean();
-      res.status(201).json(request);
+      res.status(201).json(outgoingRequest);
     }
   } catch (error) {
-    console.error("Error in sendFriendRequest controller:", error.message);
+    console.error("Error in sendFriendRequest controller:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -84,9 +92,7 @@ export const handleFriendRequest = async (req, res) => {
 
     if (!request) return res.status(404).json({ error: "Friend request not found" });
     if (![request.senderID.toString(), request.receiverID.toString()].includes(userID.toString())) {
-      return res
-        .status(403)
-        .json({ error: `Unauthorized ${request.senderID}, ${request.receiverID}, ${userID}` });
+      return res.status(403).json({ error: `Unauthorized` });
     }
 
     let conversation;
@@ -106,6 +112,14 @@ export const handleFriendRequest = async (req, res) => {
           $push: { friends: userID, conversations: conversation._id },
         }),
       ]);
+    }
+
+    // Send a notification to the receiver if they are online
+    const receiverSocketID = getReceiverSocketID(
+      action == "cancel" ? request.receiverID : request.senderID
+    );
+    if (receiverSocketID) {
+      io.to(receiverSocketID).emit(`${action}FriendRequest`, { request, conversation });
     }
 
     await FriendRequest.findByIdAndDelete(request._id);

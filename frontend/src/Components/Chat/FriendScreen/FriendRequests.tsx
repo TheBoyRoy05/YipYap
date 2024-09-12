@@ -1,4 +1,5 @@
 import useGetRequests from "../../../Hooks/Friends/useGetRequests";
+import useListenRequest from "../../../Hooks/Friends/useListenRequest";
 import useFriends from "../../../Store/useFriends";
 import Friend from "./Friend";
 
@@ -6,6 +7,8 @@ const FriendRequests = () => {
   const { layout } = useFriends();
   const { loading, requests } = useGetRequests();
   const { incoming, outgoing } = requests;
+  useListenRequest();
+
   const style =
     layout === "grid" && !loading
       ? "grid grid-cols-5 content-stretch px-12 gap-x-10 gap-y-8"

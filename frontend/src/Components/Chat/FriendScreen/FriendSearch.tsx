@@ -28,6 +28,7 @@ const FriendSearch = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!addingFriends) return;
     setSearchText("");
     sendFriendRequest(searchText);
   };
