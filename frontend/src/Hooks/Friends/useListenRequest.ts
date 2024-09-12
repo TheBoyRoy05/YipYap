@@ -17,7 +17,7 @@ interface AcceptFriendRequestType {
 
 const useListenRequest = () => {
   const { socket } = useSocket();
-  const { setRequests } = useFriends();
+  const { setRequests, setFriends } = useFriends();
   const { setMyConversations } = useConversation();
   
   const removeRequest = (request: { _id: string }) => {
@@ -38,6 +38,7 @@ const useListenRequest = () => {
 
     socket?.on("acceptFriendRequest", ({ request, conversation }: AcceptFriendRequestType) => {
       removeRequest(request);
+      setFriends(prev => [request.receiverID, ...prev]);
       setMyConversations((prev) => [conversation, ...prev]);
       toast.success(`${request.receiverID.fullName} accepted your friend request!`);
     });
