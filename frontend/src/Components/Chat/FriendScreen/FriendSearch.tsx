@@ -35,7 +35,7 @@ const FriendSearch = () => {
 
   return (
     <form
-      className="flex items-center mx-auto w-8/12 h-12 bg-gray-800 rounded-2xl px-2 text-lg"
+      className="flex items-center mx-auto w-[800px] h-12 bg-gray-800 rounded-2xl px-2 text-lg"
       onSubmit={handleSubmit}
     >
       <button

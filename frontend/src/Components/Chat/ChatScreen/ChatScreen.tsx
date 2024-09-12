@@ -16,7 +16,7 @@ const ChatScreen = () => {
 
   return (
     <div className="flex-grow md:min-w-[450px] flex flex-col">
-      <div className="bg-blue-500 px-4 py-3 flex items-center gap-4">
+      <div className="bg-slate-500 px-4 py-3 flex items-center gap-4">
         <div className={`avatar ${online ? "online" : ""}`}>
           <div className="w-10 rounded-full border-2 border-white">
             {isGroupChat && !conversation.profilePic ? (
