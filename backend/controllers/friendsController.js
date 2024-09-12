@@ -12,7 +12,7 @@ export const getFriends = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json(user.friends || []);
+    res.status(200).json(user?.friends || []);
   } catch (error) {
     console.error("Error in getFriends controller:", error.message);
     res.status(500).json({ error: "Internal server error" });
@@ -88,7 +88,7 @@ export const handleFriendRequest = async (req, res) => {
     const { action } = req.query;
 
     // Find the friend request
-    const request = await FriendRequest.findById(id).lean();
+    let request = await FriendRequest.findById(id).lean();
 
     if (!request) return res.status(404).json({ error: "Friend request not found" });
     if (![request.senderID.toString(), request.receiverID.toString()].includes(userID.toString())) {
@@ -114,16 +114,23 @@ export const handleFriendRequest = async (req, res) => {
       ]);
     }
 
+    request = await FriendRequest.findById(request._id)
+      .populate(action == "cancel" ? "senderID" : "receiverID")
+      .lean();
+
     // Send a notification to the receiver if they are online
     const receiverSocketID = getReceiverSocketID(
       action == "cancel" ? request.receiverID : request.senderID
     );
     if (receiverSocketID) {
-      io.to(receiverSocketID).emit(`${action}FriendRequest`, { request, conversation });
+      io.to(receiverSocketID).emit(
+        `${action}FriendRequest`,
+        action == "accept" ? { request, conversation } : request
+      );
     }
 
     await FriendRequest.findByIdAndDelete(request._id);
-    res.status(200).json(conversation);
+    res.status(200).json(conversation || {});
   } catch (error) {
     console.error("Error in handleFriendRequest controller:", error);
     res.status(500).json({ error: "Internal server error" });
