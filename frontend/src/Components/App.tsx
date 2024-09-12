@@ -1,6 +1,6 @@
-import Home from "../Pages/Home";
-import Login from "../Pages/Login";
-import Signup from "../Pages/Signup";
+import Home from "./Pages/Home.tsx";
+import Login from "./Pages/Login.tsx";
+import Signup from "./Pages/Signup.tsx";
 import { Toaster } from "react-hot-toast";
 import useConversation from "../Store/useConversation.ts";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -8,6 +8,7 @@ import useSocketConnection from "../Hooks/useSocketConnection.ts";
 import { useEffect } from "react";
 import { emptyConversation } from "../Utils/Types.ts";
 import useFriends from "../Store/useFriends.ts";
+import GroupChat from "./GroupChat/GroupChat.tsx";
 
 const App = () => {
   const { authUser, setAuthUser, setConversation } = useConversation();
@@ -30,7 +31,7 @@ const App = () => {
   }, [setAddingFriends, setConversation, setShowFriendsPage]);
 
   return (
-    <div className="p-4 h-screen flex items-center justify-center">
+    <div className="h-screen flex items-center justify-center">
       <Routes>
         <Route
           path="/"
@@ -45,6 +46,7 @@ const App = () => {
           element={authUser._id ? <Navigate to="/" /> : <Signup />}
         />
       </Routes>
+      <GroupChat />
       <Toaster />
     </div>
   );

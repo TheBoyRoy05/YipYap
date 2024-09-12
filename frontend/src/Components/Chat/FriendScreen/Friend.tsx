@@ -11,11 +11,14 @@ import {
 
 interface FriendProps {
   data: UserType | IncomingFriendRequestType | OutgoingFriendRequestType;
-  requestType?: "" | "incoming" | "outgoing";
+  requestType?: "incoming" | "outgoing";
+  layoutType?: "grid" | "list";
 }
 
-const Friend = ({ data, requestType = "" }: FriendProps) => {
-  const { layout } = useFriends();
+const Friend = ({ data, requestType, layoutType }: FriendProps) => {
+  let { layout } = useFriends();
+  layout = layoutType || layout;
+
   const user =
     requestType == "incoming"
       ? (data as IncomingFriendRequestType).senderID
@@ -44,7 +47,7 @@ const Friend = ({ data, requestType = "" }: FriendProps) => {
           <img src={user.profilePic} alt="user avatar" />
         </div>
       </div>
-      <div className={`flex-grow ${layout == "list" ? "flex flex-col justify-center" : ""}`}>
+      <div className={`flex-grow ${layout == "list" && "flex flex-col justify-center text-left"}`}>
         <p className={`text-xl text-white`}>
           {layout == "grid" && user.fullName.length > 13
             ? user.fullName.slice(0, 13) + "..."

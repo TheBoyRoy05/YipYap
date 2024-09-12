@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Button from "../Components/Form/Button";
-import Input from "../Components/Form/Input";
-import LinkText from "../Components/Form/LinkText";
-import useLogin from "../Hooks/Auth/useLogin";
+import Button from "../Form/Button";
+import Input from "../Form/Input";
+import LinkText from "../Form/LinkText";
+import useLogin from "../../Hooks/Auth/useLogin";
 
 const Login = () => {
   const [username, setUsername] = useState("");
