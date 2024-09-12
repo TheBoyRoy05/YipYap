@@ -1,11 +1,12 @@
-import useGetMyConversations from "../../Hooks/Conversation/useGetMyConversations.ts";
-import useConversation from "../../Store/useConversation.ts";
+import { ConversationType } from "../../Utils/Types.ts";
 import Conversation from "./Conversation.tsx";
 
-const Conversations = () => {
-  const { loading } = useGetMyConversations();
-  const { myConversations } = useConversation();
+interface ConversationsProps {
+  loading: boolean;
+  conversations: ConversationType[];
+}
 
+const Conversations = ({loading, conversations} : ConversationsProps) => {
   return (
     <div className="flex-grow flex flex-col overflow-y-auto dark-scrollbar">
       {loading ? (
@@ -13,9 +14,9 @@ const Conversations = () => {
           <span className="loading loading-bars loading-lg" />
         </div>
       ) : (
-        myConversations.map((conversation, index) =>
-            <Conversation key={index} conversation={conversation} numNotifs={0} />
-        )
+        conversations.map((conversation, index) => (
+          <Conversation key={index} conversation={conversation} numNotifs={0} />
+        ))
       )}
     </div>
   );

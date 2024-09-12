@@ -5,7 +5,7 @@ import { ConversationType } from "../../Utils/Types.ts";
 
 const useGetMyConversations = () => {
   const [loading, setLoading] = useState(false);
-  const { authUser, setMyConversations } = useConversation();
+  const { authUser, myConversations, setMyConversations } = useConversation();
 
   useEffect(() => {
     const getMyConversations = async () => {
@@ -45,9 +45,9 @@ const useGetMyConversations = () => {
     };
 
     getMyConversations();
-  }, [setMyConversations]);
+  }, [setMyConversations, authUser]);
 
-  return { loading };
+  return { loading, myConversations };
 };
 
 export default useGetMyConversations;

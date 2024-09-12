@@ -1,13 +1,12 @@
 import { useRef, useState } from "react";
 import { IoMdSearch } from "react-icons/io";
-import useSearch from "../../Hooks/useSearch";
 import { IoArrowBack } from "react-icons/io5";
+import useConversation from "../../Store/useConversation";
 
 const ConvoSearch = () => {
-  const { convoSearch } = useSearch();
-  const [text, setText] = useState("");
   const [focused, setFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { searchText, setSearchText } = useConversation();
 
   const handleButtonClick = () => {
     if (inputRef.current) {
@@ -18,9 +17,8 @@ const ConvoSearch = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
-    convoSearch(e.target.value);
-  }
+    setSearchText(e.target.value);
+  };
 
   return (
     <form className="flex w-72 h-12 bg-gray-800 rounded-2xl px-2 text-lg">
@@ -35,7 +33,7 @@ const ConvoSearch = () => {
         type="text"
         className="flex-grow bg-transparent placeholder-slate-500 text-box p-2"
         placeholder="Search..."
-        value={text}
+        value={searchText}
         ref={inputRef}
         onChange={handleChange}
       />
