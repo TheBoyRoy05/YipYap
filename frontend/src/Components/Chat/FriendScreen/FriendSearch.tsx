@@ -40,7 +40,7 @@ const FriendSearch = () => {
       </button>
       <input
         type="text"
-        className="flex-grow bg-transparent placeholder-slate-500 text-box p-2"
+        className="flex-grow bg-transparent placeholder-slate-500 text-box p-2 text-white"
         placeholder={`${
           addingFriends ? "You can add Yappers with their YipYap username" : "Find my Yappers..."
         }`}

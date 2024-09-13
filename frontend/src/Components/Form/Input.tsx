@@ -20,7 +20,7 @@ const Input = ({ name, type, value, setValue }: InputProps) => {
         id={format(name)}
         type={type}
         placeholder={`Enter ${capitalize(removeFirst(name))}`}
-        className="w-full input input-bordered h-10"
+        className="w-full input input-bordered h-10 text-white"
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />

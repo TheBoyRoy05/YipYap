@@ -118,7 +118,7 @@ export const sendMessage = async (req, res) => {
     const senderID = req.user._id;
 
     let conversation = await Conversation.findById(convoID);
-    if (!conversation) res.status(404).json({ error: "Conversation not found" });
+    if (!conversation) return res.status(404).json({ error: "Conversation not found" });
 
     const newMessage = new Message({
       sender: senderID,

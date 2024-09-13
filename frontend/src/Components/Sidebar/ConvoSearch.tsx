@@ -27,7 +27,7 @@ const ConvoSearch = () => {
       </button>
       <input
         type="text"
-        className="flex-grow bg-transparent placeholder-slate-500 text-box p-2"
+        className="flex-grow bg-transparent placeholder-slate-500 text-box p-2 text-white"
         placeholder="Search..."
         value={searchText}
         ref={inputRef}

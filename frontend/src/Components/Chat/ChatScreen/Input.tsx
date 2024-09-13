@@ -25,7 +25,7 @@ const Input = () => {
         </button>
         <input
           type="text"
-          className="flex-grow bg-transparent placeholder-slate-500 text-box"
+          className="flex-grow bg-transparent placeholder-slate-500 text-box text-white"
           placeholder="Message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}

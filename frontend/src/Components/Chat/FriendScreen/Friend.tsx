@@ -41,7 +41,7 @@ const Friend = ({ data, requestType, layoutType }: FriendProps) => {
   const online = onlineUserIDs.includes(user._id) ? "online" : "";
 
   return (
-    <div className={`card bg-base-100 ${containerStyle} ${paddingStyle}`}>
+    <div className={`card bg-slate-800 ${containerStyle} ${paddingStyle}`}>
       <div className={`avatar ${online} ${avatarStyle}`}>
         <div className={`${layout == "grid" ? "w-14" : "w-12"} rounded-full`}>
           <img src={user.profilePic} alt="user avatar" />
