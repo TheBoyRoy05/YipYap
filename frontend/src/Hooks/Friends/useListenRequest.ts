@@ -33,24 +33,24 @@ const useListenRequest = () => {
         ...prev,
         incoming: [...prev.incoming, request],
       }));
-      toast(`${request.senderID.fullName} sent you a friend request!`);
+      toast(`${request.sender.fullName} sent you a friend request!`);
     });
 
     socket?.on("acceptFriendRequest", ({ request, conversation }: AcceptFriendRequestType) => {
       removeRequest(request);
-      setFriends(prev => [request.receiverID, ...prev]);
+      setFriends(prev => [request.receiver, ...prev]);
       setMyConversations((prev) => [conversation, ...prev]);
-      toast.success(`${request.receiverID.fullName} accepted your friend request!`);
+      toast.success(`${request.receiver.fullName} accepted your friend request!`);
     });
 
     socket?.on("declineFriendRequest", (request: OutgoingFriendRequestType) => {
       removeRequest(request);
-      toast.error(`${request.receiverID.fullName} declined your friend request!`);
+      toast.error(`${request.receiver.fullName} declined your friend request!`);
     });
 
     socket?.on("cancelFriendRequest", (request: IncomingFriendRequestType) => {
       removeRequest(request);
-      toast.error(`${request.senderID.fullName} canceled their friend request!`);
+      toast.error(`${request.sender.fullName} canceled their friend request!`);
     });
 
     return () => {

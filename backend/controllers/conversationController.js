@@ -121,9 +121,9 @@ export const sendMessage = async (req, res) => {
     if (!conversation) res.status(404).json({ error: "Conversation not found" });
 
     const newMessage = new Message({
-      senderID,
+      sender: senderID,
       message,
-      conversationID: conversation._id,
+      conversation: conversation._id,
     });
 
     if (newMessage) {

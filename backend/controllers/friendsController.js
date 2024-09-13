@@ -25,8 +25,8 @@ export const getFriendRequests = async (req, res) => {
 
     // Get incoming and outgoing friend requests
     const [incoming, outgoing] = await Promise.all([
-      FriendRequest.find({ receiverID: userID }).populate("senderID").lean(),
-      FriendRequest.find({ senderID: userID }).populate("receiverID").lean(),
+      FriendRequest.find({ receiver: userID }).populate("sender").lean(),
+      FriendRequest.find({ sender: userID }).populate("receiver").lean(),
     ]);
 
     res.status(200).json({
@@ -53,8 +53,8 @@ export const sendFriendRequest = async (req, res) => {
 
     // Check if a friend request already exists
     const [youAlreadySent, theyAlreadySent] = await Promise.all([
-      FriendRequest.findOne({ senderID, receiverID }).lean(),
-      FriendRequest.findOne({ senderID: receiverID, receiverID: senderID }).lean(),
+      FriendRequest.findOne({ sender: senderID, receiver: receiverID }).lean(),
+      FriendRequest.findOne({ sender: receiverID, receiver: senderID }).lean(),
     ]);
 
     if (youAlreadySent || theyAlreadySent) {
@@ -62,10 +62,10 @@ export const sendFriendRequest = async (req, res) => {
     }
 
     // Create a new friend request
-    const request = await FriendRequest.create({ senderID, receiverID });
+    const request = await FriendRequest.create({ sender: senderID, receiver: receiverID });
     const [incomingRequest, outgoingRequest] = await Promise.all([
-      FriendRequest.findById(request._id).populate("senderID").lean(),
-      FriendRequest.findById(request._id).populate("receiverID").lean(),
+      FriendRequest.findById(request._id).populate("sender").lean(),
+      FriendRequest.findById(request._id).populate("receiver").lean(),
     ]);
 
     // Send a notification to the receiver if they are online
@@ -91,13 +91,13 @@ export const handleFriendRequest = async (req, res) => {
     let request = await FriendRequest.findById(id).lean();
 
     if (!request) return res.status(404).json({ error: "Friend request not found" });
-    if (![request.senderID.toString(), request.receiverID.toString()].includes(userID.toString())) {
+    if (![request.sender.toString(), request.receiver.toString()].includes(userID.toString())) {
       return res.status(403).json({ error: `Unauthorized` });
     }
 
     let conversation;
     if (action === "accept") {
-      conversation = await Conversation.create({ participants: [userID, request.senderID] });
+      conversation = await Conversation.create({ participants: [userID, request.sender] });
       conversation = await Conversation.findById(conversation._id)
         .populate("participants")
         .populate("messages")
@@ -106,21 +106,21 @@ export const handleFriendRequest = async (req, res) => {
       // Add friends, and create conversation between the two users
       await Promise.all([
         User.findByIdAndUpdate(userID, {
-          $push: { friends: request.senderID, conversations: conversation._id },
+          $push: { friends: request.sender, conversations: conversation._id },
         }),
-        User.findByIdAndUpdate(request.senderID, {
+        User.findByIdAndUpdate(request.sender, {
           $push: { friends: userID, conversations: conversation._id },
         }),
       ]);
     }
 
     request = await FriendRequest.findById(request._id)
-      .populate(action == "cancel" ? "senderID" : "receiverID")
+      .populate(action == "cancel" ? "sender" : "receiver")
       .lean();
 
     // Send a notification to the receiver if they are online
     const receiverSocketID = getReceiverSocketID(
-      action == "cancel" ? request.receiverID : request.senderID
+      action == "cancel" ? request.receiver : request.sender
     );
     if (receiverSocketID) {
       io.to(receiverSocketID).emit(

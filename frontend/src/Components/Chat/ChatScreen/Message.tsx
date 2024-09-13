@@ -10,7 +10,7 @@ interface MessageProps {
 const Message = ({first, message}: MessageProps) => {
   const { date, time } = formatDateTime(message.createdAt);
   const { conversation } = useConversation();
-  const sender = conversation.participants.find((p) => p._id === message.senderID) || emptyUser;
+  const sender = conversation.participants.find((p) => p._id === message.sender) || emptyUser;
 
   return (
     <div className={`flex items-center hover:bg-gray-800 group ${first ? "mt-2" : ""}`}>

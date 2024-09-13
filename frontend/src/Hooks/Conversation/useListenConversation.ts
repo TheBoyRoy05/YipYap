@@ -13,7 +13,7 @@ const useListenConversation = () => {
     const sound = new Audio(Quack);
 
     socket?.on("newMessage", (message: MessageType) => {
-      if (message.conversationID === conversation._id) {
+      if (message.conversation === conversation._id) {
         setConversation((prevConvo) => ({
           ...prevConvo,
           messages: [...prevConvo.messages, message],

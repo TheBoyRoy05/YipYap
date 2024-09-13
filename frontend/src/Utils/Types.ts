@@ -10,8 +10,8 @@ export interface UserType {
 export interface MessageType {
   _id: string;
   __v: number;
-  senderID: string;
-  conversationID: string;
+  sender: string;
+  conversation: string;
   message: string;
   createdAt: string;
   updatedAt: string;
@@ -29,15 +29,15 @@ export interface ConversationType {
 export interface IncomingFriendRequestType {
   _id: string;
   __v: number;
-  senderID: UserType;
-  receiverID: string;
+  sender: UserType;
+  receiver: string;
 }
 
 export interface OutgoingFriendRequestType {
   _id: string;
   __v: number;
-  senderID: string;
-  receiverID: UserType;
+  sender: string;
+  receiver: UserType;
 }
 
 export interface FriendRequestsType {

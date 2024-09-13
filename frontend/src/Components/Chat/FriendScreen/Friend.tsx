@@ -24,9 +24,9 @@ const Friend = ({ data, requestType, layoutType }: FriendProps) => {
 
   const user =
     requestType == "incoming"
-      ? (data as IncomingFriendRequestType).senderID
+      ? (data as IncomingFriendRequestType).sender
       : requestType == "outgoing"
-      ? (data as OutgoingFriendRequestType).receiverID
+      ? (data as OutgoingFriendRequestType).receiver
       : (data as UserType);
 
   const paddingStyle =

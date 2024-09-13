@@ -20,7 +20,7 @@ const Messages = () => {
         <div key={index} ref={lastMessage}>
           <Message
             first={
-              index === 0 || conversation.messages[index - 1].senderID !== message.senderID
+              index === 0 || conversation.messages[index - 1].sender !== message.sender
             }
             message={message}
           />
