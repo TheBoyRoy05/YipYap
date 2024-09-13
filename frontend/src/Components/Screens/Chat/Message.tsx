@@ -13,7 +13,7 @@ const Message = ({first, message}: MessageProps) => {
   const sender = conversation.participants.find((p) => p._id === message.sender) || emptyUser;
 
   return (
-    <div className={`flex items-center hover:bg-gray-800 group ${first ? "mt-2" : ""}`}>
+    <div className={`flex items-center hover:bg-gray-800 group px-2 ${first ? "mt-2" : ""}`}>
       {first ? (
         <div className="avatar">
           <div className="w-10 mx-3 rounded-full">
@@ -21,7 +21,7 @@ const Message = ({first, message}: MessageProps) => {
           </div>
         </div>
       ) : (
-        <span className="w-16 text-xs text-center invisible group-hover:visible">
+        <span className="w-16 text-xs text-gray-400 text-center invisible group-hover:visible">
           {time}
         </span>
       )}
@@ -29,7 +29,7 @@ const Message = ({first, message}: MessageProps) => {
         {first ? (
           <div className="flex text-sm mt-1">
             <p className="text-white mr-2">{sender.fullName}</p>
-            <span>{`${date} ${time}`}</span>
+            <span className="text-gray-400">{`${date} ${time}`}</span>
           </div>
         ) : (
           <></>

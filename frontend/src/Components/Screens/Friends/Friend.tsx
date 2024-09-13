@@ -41,7 +41,7 @@ const Friend = ({ data, requestType, layoutType }: FriendProps) => {
   const online = onlineUserIDs.includes(user._id) ? "online" : "";
 
   return (
-    <div className={`card dark:bg-base-100 ${containerStyle} ${paddingStyle}`}>
+    <div className={`card bg-[#1D232A] dark:bg-base-100 text-gray-400 ${containerStyle} ${paddingStyle}`}>
       <div className={`avatar ${online} ${avatarStyle}`}>
         <div className={`${layout == "grid" ? "w-14" : "w-12"} rounded-full`}>
           <img src={user.profilePic} alt="user avatar" />
@@ -58,7 +58,7 @@ const Friend = ({ data, requestType, layoutType }: FriendProps) => {
       {layoutType ? (
         <input
           type="checkbox"
-          className="checkbox"
+          className="checkbox border-gray-400"
           onChange={() => {}}
           checked={selectedFriends.some((friend) => friend._id === user._id)}
         />

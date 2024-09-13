@@ -4,20 +4,21 @@ import useFriends from "../../../Store/useFriends";
 
 const LayoutSelect = () => {
   const { layout, setLayout } = useFriends();
+  const btnClass = "btn flex-grow join-item p-0 text-2xl hover:bg-blue-400 hover:text-white border-none";
 
   return (
-    <div className="flex w-40 justify-center mr-20">
+    <div className="flex w-40 justify-center mr-20 join">
       <button
         type="button"
-        className={`btn ${layout == "grid" ? "bg-blue-500 text-white" : ""} flex-grow rounded-tr-none rounded-br-none p-0 text-2xl hover:bg-blue-400 hover:text-white`}
+        className={`${btnClass} ${layout === "grid" ? "bg-blue-500 text-white" : "bg-gray-800 text-gray-400"}`}
         onClick={() => setLayout("grid")}
       >
         <FiGrid />
       </button>
-      <div className="border-r border-r-gray-500" />
+      <div className="h-full mx-0.5" />
       <button
         type="button"
-        className={`btn ${layout == "list" ? "bg-blue-500 text-white" : ""} flex-grow rounded-tl-none rounded-bl-none p-0 text-2xl hover:bg-blue-400 hover:text-white`}
+        className={`${btnClass} ${layout === "list" ? "bg-blue-500 text-white" : "bg-gray-800 text-gray-400"}`}
         onClick={() => setLayout("list")}
       >
         <MdFormatListBulleted />

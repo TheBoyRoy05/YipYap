@@ -11,7 +11,7 @@ const TagInput = () => {
   return (
     <div className="flex flex-wrap gap-y-2 items-center bg-gray-800 rounded-lg p-2">
       {selectedFriends.map((friend, index) => (
-        <span key={index} className="flex items-center bg-gray-800 px-2 py-1 rounded mr-2">
+        <span key={index} className="flex items-center bg-gray-700 text-gray-400 px-2 py-1 rounded mr-2">
           {friend.fullName}
           <button className="ml-2 text-red-500" onClick={() => handleRemoveTag(friend)}>
             &times;

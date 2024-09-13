@@ -12,7 +12,7 @@ const Friends = ({ loading, friends }: FriendsProps) => {
   const style =
     layout === "grid" && !loading
       ? "grid grid-cols-5 content-stretch px-12 gap-x-10 gap-y-8"
-      : "flex flex-col gap-y-4 px-12";
+      : "flex flex-col gap-y-4 px-12 mt-4";
 
   return (
     <div className={`flex-grow overflow-y-auto dark-scrollbar ${style}`}>
