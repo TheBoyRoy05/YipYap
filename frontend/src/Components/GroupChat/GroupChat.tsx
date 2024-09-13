@@ -46,7 +46,8 @@ const GroupChat = () => {
             <TagInput />
             <Friends loading={loadingFriends} friends={filteredFriends} />
             <button
-              className="btn btn-block mt-6 bg-blue-500 hover:bg-blue-600 text-white text-lg"
+              className="btn btn-block mt-6 bg-blue-500 hover:bg-blue-600 text-white text-lg disabled:bg-zinc-800"
+              disabled={selectedFriends.length == 0}
               type="submit"
             >
               {loadingCreate ? <span className="loading loading-spinner" /> : "Create Yap Session"}
