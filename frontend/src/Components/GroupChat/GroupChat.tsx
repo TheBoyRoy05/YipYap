@@ -41,7 +41,7 @@ const GroupChat = () => {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
           onClick={handleClickOutside}
         >
-          <form className="card bg-slate-700 p-4 w-[800px] max-h-[500px]" onSubmit={handleSubmit}>
+          <form className="card dark:bg-base-300 p-4 w-[800px] max-h-[500px]" onSubmit={handleSubmit}>
             <p className="text-xl font-bold mb-4 border-b pb-2 text-white">Select Friends</p>
             <TagInput />
             <Friends loading={loadingFriends} friends={filteredFriends} />

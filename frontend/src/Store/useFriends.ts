@@ -24,7 +24,7 @@ const useFriends = create<FriendsType>((set) => ({
   layout: "grid",
   searchText: "",
   addingFriends: false,
-  showFriendsPage: false,
+  showFriendsPage: true,
   requests: emptyFriendRequests,
   setLayout: createSetter<FriendsType>(set)("layout"),
   setFriends: createSetter<FriendsType>(set)("friends"),

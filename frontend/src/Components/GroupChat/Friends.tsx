@@ -1,6 +1,6 @@
 import useGroupChat from "../../Store/useGroupChat";
 import { UserType } from "../../Utils/Types";
-import Friend from "../Chat/FriendScreen/Friend";
+import Friend from "../Screens/Friends/Friend";
 
 interface FriendsProps {
   loading: boolean;
