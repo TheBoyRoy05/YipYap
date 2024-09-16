@@ -5,7 +5,7 @@ import { MessageType } from "../../Utils/Types.ts";
 
 const useGetMessages = () => {
   const [loading, setLoading] = useState(false);
-  const { authUser, conversation, setConversation, messages, setMessages } = useConversation();
+  const { conversation, setConversation, messages, setMessages } = useConversation();
 
   useEffect(() => {
     const getMessages = async () => {
@@ -24,7 +24,7 @@ const useGetMessages = () => {
 
         setConversation((prevConversation) => ({
           ...prevConversation,
-          lastReadMessageID: messages[messages.length - 1]._id,
+          lastReadMessageID: messages.length > 0 ? messages[messages.length - 1]._id : "",
           messages: messages.map((message: MessageType) => message._id),
         }));
 
@@ -38,7 +38,7 @@ const useGetMessages = () => {
     };
 
     getMessages();
-  }, [setConversation, authUser, conversation._id, setMessages]);
+  }, [setConversation, conversation._id, setMessages]);
 
   return { loading, messages };
 };

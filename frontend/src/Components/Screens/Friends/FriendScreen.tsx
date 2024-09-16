@@ -8,7 +8,8 @@ import useGetFriends from "../../../Hooks/Friends/useGetFriends";
 import { useEffect, useState } from "react";
 
 const FriendScreen = () => {
-  const { loading, friends } = useGetFriends();
+  useGetFriends();
+  const { friends } = useFriends();
   const [filteredFriends, setFilteredFriends] = useState(friends);
   const { addingFriends, setAddingFriends, searchText } = useFriends();
 
@@ -37,7 +38,7 @@ const FriendScreen = () => {
         <FriendSearch />
         <LayoutSelect />
       </div>
-      {addingFriends ? <FriendRequests /> : <Friends loading={loading} friends={filteredFriends} />}
+      {addingFriends ? <FriendRequests /> : <Friends friends={filteredFriends} />}
     </div>
   );
 };

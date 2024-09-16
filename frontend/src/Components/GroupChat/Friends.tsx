@@ -3,11 +3,10 @@ import { UserType } from "../../Utils/Types";
 import Friend from "../Screens/Friends/Friend";
 
 interface FriendsProps {
-  loading: boolean;
   friends: UserType[];
 }
 
-const Friends = ({ loading, friends }: FriendsProps) => {
+const Friends = ({ friends }: FriendsProps) => {
   const { setSearchText, selectedFriends, setSelectedFriends } = useGroupChat();
 
   const handleClick = (friend: UserType) => {
@@ -21,17 +20,11 @@ const Friends = ({ loading, friends }: FriendsProps) => {
 
   return (
     <div className="flex flex-col flex-grow gap-y-4 mt-4 overfow-y-auto dark-scrollbar">
-      {loading ? (
-        <div className="h-full flex items-center justify-center">
-          <span className="loading loading-bars loading-lg" />
-        </div>
-      ) : (
-        friends.map((friend, index) => (
-          <button key={index} type="button" className="w-full" onClick={() => handleClick(friend)}>
-            <Friend data={friend} layoutType="list" />
-          </button>
-        ))
-      )}
+      {friends.map((friend, index) => (
+        <button key={index} type="button" className="w-full" onClick={() => handleClick(friend)}>
+          <Friend data={friend} layoutType="list" />
+        </button>
+      ))}
     </div>
   );
 };

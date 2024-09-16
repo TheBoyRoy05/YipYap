@@ -12,23 +12,50 @@ export const getMessages = async (req, res) => {
 
     if (!conversation) return res.status(404).json({ error: "Conversation not found" });
 
-    const latestMessageID = conversation.messages[conversation.messages.length - 1];
-    await User.findByIdAndUpdate(
-      senderID,
-      {
-        $set: {
-          "conversations.$[elem].lastReadMessageID": latestMessageID,
-        },
-      },
-      { arrayFilters: [{ "elem.conversation": conversation._id }] }
-    );
+    const messages = conversation.messages;
+    const latestMessageID = messages ? messages[messages.length - 1] : "";
 
-    res.status(200).json(conversation.messages || []);
+    if (latestMessageID) {
+      await User.findByIdAndUpdate(
+        senderID,
+        {
+          $set: {
+            "conversations.$[elem].lastReadMessageID": latestMessageID,
+          },
+        },
+        { arrayFilters: [{ "elem.conversation": convoID }] }
+      );
+    }
+
+    res.status(200).json(messages || []);
   } catch (error) {
     console.error("Error in getConversation controller: ", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const readConversation = async (req, res) => {
+  try {
+    const userID = req.user._id;
+    const { convoID } = req.params;
+    const { lastReadMessageID } = req.body;
+    
+    await User.findByIdAndUpdate(
+      userID,
+      {
+        $set: {
+          "conversations.$[elem].lastReadMessageID": lastReadMessageID,
+        },
+      },
+      { arrayFilters: [{ "elem.conversation": convoID }] }
+    );
+
+    res.status(200).json({ message: "Conversation read" });
+  } catch (error) {
+    console.error("Error in readConversation controller: ", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
 
 export const createConversation = async (req, res) => {
   try {

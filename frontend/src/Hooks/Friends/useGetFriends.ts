@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import useFriends from "../../Store/useFriends";
+import useConversation from "../../Store/useConversation";
 
 const useGetFriends = () => {
   const [loading, setLoading] = useState(false);
   const { friends, setFriends } = useFriends();
+  const { authUser } = useConversation();
 
   useEffect(() => {
     const getFriends = async () => {
@@ -30,8 +32,8 @@ const useGetFriends = () => {
       }
     };
 
-    getFriends();
-  }, [setFriends]);
+    if (authUser._id) getFriends();
+  }, [authUser._id, setFriends]);
 
   return { loading, friends };
 };

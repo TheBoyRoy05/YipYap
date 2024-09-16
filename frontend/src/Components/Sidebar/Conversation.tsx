@@ -32,7 +32,7 @@ const Conversation = ({ conversation, numNotifs }: ChatProps) => {
   return (
     <button
       onClick={handleClick}
-      className={`flex gap-3 items-center border-b px-2 py-3 cursor-pointer group text-left ${bgColor}`}
+      className={`flex gap-3 items-center border-b px-2 py-3 cursor-pointer group text-left max-w-72 ${bgColor}`}
     >
       {isGroupChat ? (
         <div
@@ -48,7 +48,7 @@ const Conversation = ({ conversation, numNotifs }: ChatProps) => {
           </div>
         </div>
       )}
-      <div className="flex flex-col flex-1 max-w-[220px]">
+      <div className="flex flex-col flex-1 max-w-[220px] truncate">
         <p className={`text-lg leading-6 group-hover:text-white ${nameColor} truncate`}>
           {getConversationName(conversation, authUser)}
         </p>

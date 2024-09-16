@@ -4,9 +4,11 @@ import useGroupChat from "../../Store/useGroupChat";
 import TagInput from "./TagInput";
 import Friends from "./Friends";
 import useCreateConversation from "../../Hooks/Conversation/useCreateConversation";
+import useFriends from "../../Store/useFriends";
 
 const GroupChat = () => {
-  const { loading: loadingFriends, friends } = useGetFriends();
+  useGetFriends();
+  const { friends } = useFriends();
   const [filteredFriends, setFilteredFriends] = useState(friends);
   const { loading: loadingCreate, createConversation } = useCreateConversation();
   const { popup, setPopup, searchText, setSearchText, selectedFriends, setSelectedFriends } =
@@ -41,10 +43,13 @@ const GroupChat = () => {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
           onClick={handleClickOutside}
         >
-          <form className="card bg-[#15191E] dark:bg-base-300 p-4 w-[800px] max-h-[500px]" onSubmit={handleSubmit}>
+          <form
+            className="card bg-[#15191E] dark:bg-base-300 p-4 w-[800px] max-h-[500px]"
+            onSubmit={handleSubmit}
+          >
             <p className="text-xl font-bold mb-4 border-b pb-2 text-white">Select Friends</p>
             <TagInput />
-            <Friends loading={loadingFriends} friends={filteredFriends} />
+            <Friends friends={filteredFriends} />
             <button
               className="btn btn-block mt-6 bg-blue-500 hover:bg-blue-600 text-white text-lg disabled:bg-zinc-800 disabled:text-zinc-400 border-none"
               disabled={selectedFriends.length == 0}

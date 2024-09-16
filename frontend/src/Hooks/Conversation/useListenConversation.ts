@@ -1,12 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import useSocket from "../../Store/useSocket";
 import useConversation from "../../Store/useConversation";
 import { ConversationType, MessageType } from "../../Utils/Types";
 import Quack from "../../assets/Sounds/quack_5.mp3";
+import useReadConversation from "./useReadConversation";
 
 const useListenConversation = () => {
   const { socket } = useSocket();
+  const { readConversation } = useReadConversation();
   const { conversation, setMessages, setConversation, setMyConversations } = useConversation();
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const useListenConversation = () => {
         }));
 
         setMessages((prevMessages) => [...prevMessages, message]);
+        readConversation(message._id);
       }
 
       setMyConversations((prevConversations) =>
@@ -45,7 +47,7 @@ const useListenConversation = () => {
         socket.off("newGroupChat");
       }
     };
-  }, [socket]);
+  }, [conversation._id, readConversation, setConversation, setMessages, setMyConversations, socket]);
 };
 
 export default useListenConversation;
