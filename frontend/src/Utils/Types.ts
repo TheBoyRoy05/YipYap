@@ -22,8 +22,9 @@ export interface ConversationType {
   __v: number;
   name: string;
   profilePic: string;
+  lastReadMessageID: string;
+  messages: string[];
   participants: UserType[];
-  messages: MessageType[];
 }
 
 export interface IncomingFriendRequestType {
@@ -59,6 +60,7 @@ export const emptyConversation = {
   __v: 0,
   name: "",
   profilePic: "",
+  lastReadMessageID: "",
   participants: [],
   messages: [],
 };

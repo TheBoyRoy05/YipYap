@@ -27,9 +27,14 @@ const userSchema = new mongoose.Schema(
     },
     conversations: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Conversation",
-        select: false,
+        conversation: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Conversation",
+        },
+        lastReadMessageID: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Message",
+        },
       },
     ],
     friends: [
@@ -42,6 +47,14 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.password;
+  delete obj.conversations;
+  delete obj.friends;
+  return obj;
+};
 
 const User = mongoose.model("User", userSchema);
 

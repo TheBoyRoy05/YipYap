@@ -1,8 +1,9 @@
-import { FaPlus, FaUserFriends } from "react-icons/fa";
+import { FaUserFriends } from "react-icons/fa";
 import useFriends from "../../Store/useFriends";
 import useConversation from "../../Store/useConversation";
 import { emptyConversation } from "../../Utils/Types";
 import useGroupChat from "../../Store/useGroupChat";
+import { LuMessageSquarePlus } from "react-icons/lu";
 
 const Title = () => {
   const { showFriendsPage, setShowFriendsPage } = useFriends();
@@ -19,17 +20,17 @@ const Title = () => {
   };
 
   const handleAddGroupChatClick = () => {
-    setPopup(prev => !prev);
+    setPopup((prev) => !prev);
   };
 
   return (
     <div className="flex w-72 h-12 items-center px-2 mt-2 border-b">
       <span className="flex-grow text-white font-bold text-xl">{"Yap Sessions"}</span>
       <button className={`${btnClass} ${friendsBtn}`} onClick={handleFriendsClick}>
-        <FaUserFriends  />
+        <FaUserFriends />
       </button>
       <button className={`${btnClass} ${addBtn}`} onClick={handleAddGroupChatClick}>
-        <FaPlus />
+        <LuMessageSquarePlus />
       </button>
     </div>
   );

@@ -19,14 +19,14 @@ const useListenRequest = () => {
   const { socket } = useSocket();
   const { setRequests, setFriends } = useFriends();
   const { setMyConversations } = useConversation();
-  
+
   const removeRequest = (request: { _id: string }) => {
     setRequests((prev) => ({
       incoming: prev.incoming.filter((req) => req._id !== request._id),
       outgoing: prev.outgoing.filter((req) => req._id !== request._id),
     }));
   };
-  
+
   useEffect(() => {
     socket?.on("newFriendRequest", (request: IncomingFriendRequestType) => {
       setRequests((prev) => ({
@@ -38,7 +38,7 @@ const useListenRequest = () => {
 
     socket?.on("acceptFriendRequest", ({ request, conversation }: AcceptFriendRequestType) => {
       removeRequest(request);
-      setFriends(prev => [request.receiver, ...prev]);
+      setFriends((prev) => [request.receiver, ...prev]);
       setMyConversations((prev) => [conversation, ...prev]);
       toast.success(`${request.receiver.fullName} accepted your friend request!`);
     });

@@ -29,7 +29,9 @@ const useHandleRequest = () => {
         outgoing: prev.outgoing.filter((outgoingRequest) => outgoingRequest._id != requestID),
       }));
 
-      if (action == "accept") setMyConversations((prev) => [conversation, ...prev]);
+      if (action == "accept") {
+        setMyConversations((prev) => [conversation, ...prev]);
+      }
 
       const word = action == "accept" ? "accepted" : action == "decline" ? "declined" : "canceled";
       toast.success(`Friend request ${word}!`);

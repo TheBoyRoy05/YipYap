@@ -4,7 +4,7 @@ import useConversation from "../../Store/useConversation";
 
 const useSendMessage = () => {
   const [loading, setLoading] = useState(false);
-  const { conversation, setConversation } = useConversation();
+  const { conversation, setConversation, setMessages } = useConversation();
 
   const sendMessage = async (message: string) => {
     setLoading(true);
@@ -24,8 +24,11 @@ const useSendMessage = () => {
 
       setConversation((prevConvo) => ({
         ...prevConvo,
-        messages: [...prevConvo.messages, messageRes],
+        messages: [...prevConvo.messages, messageRes._id],
+        lastReadMessageID: messageRes._id,
       }));
+
+      setMessages((prevMessages) => [...prevMessages, messageRes]);
     } catch (error) {
       console.error(error);
       toast.error(error instanceof Error ? error.message : "An unexpected error occurred");

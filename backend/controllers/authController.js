@@ -29,6 +29,7 @@ export const signUp = async (req, res) => {
 
     if (user) {
       await user.save();
+      
       res.status(201).json({
         token: generateToken(user._id),
         user,
@@ -45,7 +46,7 @@ export const signUp = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const user = await User.findOne({ username }).select("+password");
+    const user = await User.findOne({ username }).select("+password").lean();
     if (!user) {
       return res.status(400).json({ error: "Username not found" });
     }
@@ -65,7 +66,7 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = async (req, res) => {
+export const logout = async (_req, res) => {
   try {
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {

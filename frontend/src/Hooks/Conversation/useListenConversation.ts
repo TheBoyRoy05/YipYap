@@ -7,7 +7,7 @@ import Quack from "../../assets/Sounds/quack_5.mp3";
 
 const useListenConversation = () => {
   const { socket } = useSocket();
-  const { conversation, setConversation, setMyConversations } = useConversation();
+  const { conversation, setMessages, setConversation, setMyConversations } = useConversation();
 
   useEffect(() => {
     const sound = new Audio(Quack);
@@ -16,9 +16,20 @@ const useListenConversation = () => {
       if (message.conversation === conversation._id) {
         setConversation((prevConvo) => ({
           ...prevConvo,
-          messages: [...prevConvo.messages, message],
+          lastReadMessageID: message._id,
+          messages: [...prevConvo.messages, message._id],
         }));
+
+        setMessages((prevMessages) => [...prevMessages, message]);
       }
+
+      setMyConversations((prevConversations) =>
+        prevConversations.map((convo) => {
+          if (convo._id === message.conversation) {
+            return { ...convo, messages: [...convo.messages, message._id] };
+          } else return convo;
+        })
+      );
 
       sound.currentTime = 0;
       sound.play();

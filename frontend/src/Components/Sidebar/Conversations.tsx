@@ -6,7 +6,7 @@ interface ConversationsProps {
   conversations: ConversationType[];
 }
 
-const Conversations = ({loading, conversations} : ConversationsProps) => {
+const Conversations = ({ loading, conversations }: ConversationsProps) => {  
   return (
     <div className="flex-grow flex flex-col overflow-y-auto dark-scrollbar">
       {loading ? (
@@ -14,9 +14,20 @@ const Conversations = ({loading, conversations} : ConversationsProps) => {
           <span className="loading loading-bars loading-lg" />
         </div>
       ) : (
-        conversations.map((conversation, index) => (
-          <Conversation key={index} conversation={conversation} numNotifs={0} />
-        ))
+        conversations.map((conversation, index) => {
+          const numMessages = conversation.messages.length;
+          const lastMessageIndex = 1 + conversation.messages.findIndex(
+            (messageID) => messageID == conversation.lastReadMessageID
+          );
+
+          return (
+            <Conversation
+              key={index}
+              conversation={conversation}
+              numNotifs={numMessages - lastMessageIndex}
+            />
+          );
+        })
       )}
     </div>
   );

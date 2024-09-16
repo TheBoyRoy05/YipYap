@@ -3,16 +3,16 @@ import protectRoute from "../middleware/protectRoute.js";
 import {
   addYapper,
   createConversation,
-  getConversation,
+  getMessages,
   getMyConversations,
   sendMessage,
 } from "../controllers/conversationController.js";
 
 const router = express.Router();
 
-router.post("/create", protectRoute, createConversation);
+router.get("/messages/:convoID", protectRoute, getMessages);
 router.get("/my-conversations", protectRoute, getMyConversations);
-router.get("/:convoID", protectRoute, getConversation);
+router.post("/create", protectRoute, createConversation);
 router.post("/add-yapper/:convoID", protectRoute, addYapper);
 router.post("/send-message/:convoID", protectRoute, sendMessage);
 

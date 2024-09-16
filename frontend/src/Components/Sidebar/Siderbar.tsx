@@ -6,18 +6,30 @@ import Title from "./Title";
 import useGetMyConversations from "../../Hooks/Conversation/useGetMyConversations";
 import useConversation from "../../Store/useConversation";
 import { useEffect, useState } from "react";
+import useListenConversation from "../../Hooks/Conversation/useListenConversation";
 
 const Siderbar = () => {
-  const { searchText } = useConversation();
-  const { loading: logoutLoading, logout } = useLogout();
-  const { loading: convosLoading, myConversations } = useGetMyConversations();
+  useListenConversation();
+  const { searchText, conversation, myConversations, setMyConversations } = useConversation();
   const [filteredConversations, setFilteredConversations] = useState(myConversations);
+  const { loading: convosLoading } = useGetMyConversations();
+  const { loading: logoutLoading, logout } = useLogout();
 
   useEffect(() => {
-    setFilteredConversations(myConversations.filter((conversation) =>
-      conversation.name.toLowerCase().includes(searchText.toLowerCase())
-    ));
-  }, [myConversations, searchText])
+    setFilteredConversations(
+      myConversations.filter((conversation) =>
+        conversation.name.toLowerCase().includes(searchText.toLowerCase())
+      )
+    );
+  }, [myConversations, searchText]);
+
+  useEffect(() => {
+    if (conversation) {
+      setMyConversations((prevConversations) =>
+        prevConversations.map((convo) => (convo._id === conversation._id ? conversation : convo))
+      );
+    }
+  }, [conversation, setMyConversations]);
 
   return (
     <div className="p-4 border-r border-slate-500 flex flex-col">

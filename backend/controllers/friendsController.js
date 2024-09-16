@@ -95,10 +95,10 @@ export const handleFriendRequest = async (req, res) => {
       return res.status(403).json({ error: `Unauthorized` });
     }
 
-    let conversation;
+    let rawConversation;
     if (action === "accept") {
-      conversation = await Conversation.create({ participants: [userID, request.sender] });
-      conversation = await Conversation.findById(conversation._id)
+      rawConversation = await Conversation.create({ participants: [userID, request.sender] });
+      rawConversation = await Conversation.findById(rawConversation._id)
         .populate("participants")
         .populate("messages")
         .lean();
@@ -106,10 +106,16 @@ export const handleFriendRequest = async (req, res) => {
       // Add friends, and create conversation between the two users
       await Promise.all([
         User.findByIdAndUpdate(userID, {
-          $push: { friends: request.sender, conversations: conversation._id },
+          $push: {
+            friends: request.sender,
+            conversations: { conversation: rawConversation._id, lastReadMessageID: null },
+          },
         }),
         User.findByIdAndUpdate(request.sender, {
-          $push: { friends: userID, conversations: conversation._id },
+          $push: {
+            friends: userID,
+            conversations: { conversation: rawConversation._id, lastReadMessageID: null },
+          },
         }),
       ]);
     }
@@ -118,10 +124,13 @@ export const handleFriendRequest = async (req, res) => {
       .populate(action == "cancel" ? "sender" : "receiver")
       .lean();
 
+    const conversation = { ...rawConversation, lastReadMessageID: "" };
+
     // Send a notification to the receiver if they are online
     const receiverSocketID = getReceiverSocketID(
       action == "cancel" ? request.receiver : request.sender
     );
+
     if (receiverSocketID) {
       io.to(receiverSocketID).emit(
         `${action}FriendRequest`,
@@ -130,7 +139,7 @@ export const handleFriendRequest = async (req, res) => {
     }
 
     await FriendRequest.findByIdAndDelete(request._id);
-    res.status(200).json(conversation || {});
+    res.status(200).json(conversation);
   } catch (error) {
     console.error("Error in handleFriendRequest controller:", error);
     res.status(500).json({ error: "Internal server error" });

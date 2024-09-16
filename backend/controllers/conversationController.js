@@ -3,7 +3,33 @@ import Conversation from "../models/convoModel.js";
 import { getReceiverSocketID, io } from "../socket.js";
 import User from "../models/userModel.js";
 
-// TODO: convert participants from string[] to mongoose.Types.ObjectId[]
+export const getMessages = async (req, res) => {
+  try {
+    const senderID = req.user._id;
+    const { convoID } = req.params;
+
+    const conversation = await Conversation.findById(convoID).populate("messages").lean();
+
+    if (!conversation) return res.status(404).json({ error: "Conversation not found" });
+
+    const latestMessageID = conversation.messages[conversation.messages.length - 1];
+    await User.findByIdAndUpdate(
+      senderID,
+      {
+        $set: {
+          "conversations.$[elem].lastReadMessageID": latestMessageID,
+        },
+      },
+      { arrayFilters: [{ "elem.conversation": conversation._id }] }
+    );
+
+    res.status(200).json(conversation.messages || []);
+  } catch (error) {
+    console.error("Error in getConversation controller: ", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export const createConversation = async (req, res) => {
   try {
     const senderID = req.user._id;
@@ -18,20 +44,27 @@ export const createConversation = async (req, res) => {
       .populate("participants")
       .lean();
 
+    const finalConvo = { ...populatedConvo, lastReadMessageID: "" };
+
     for (const participantID of newConversation.participants) {
       await User.findByIdAndUpdate(participantID, {
-        $push: { conversations: newConversation._id },
+        $push: {
+          conversations: {
+            conversation: newConversation._id,
+            lastReadMessageID: null,
+          },
+        },
       });
 
       if (participantID.toString() !== senderID.toString()) {
         const participantSocketID = getReceiverSocketID(participantID);
         if (participantSocketID) {
-          io.to(participantSocketID).emit("newGroupChat", populatedConvo);
+          io.to(participantSocketID).emit("newGroupChat", finalConvo);
         }
       }
     }
 
-    res.status(201).json(populatedConvo);
+    res.status(201).json(finalConvo);
   } catch (error) {
     console.error("Error in createConversation controller: ", error.message);
     res.status(500).json({ error: "Internal server error" });
@@ -45,41 +78,29 @@ export const getMyConversations = async (req, res) => {
     const user = await User.findById(userID)
       .populate({
         path: "conversations",
-        populate: [
-          {
-            path: "participants",
-            model: "User",
-          },
-          {
-            path: "messages",
-            model: "Message",
-          },
-        ],
+        populate: {
+          path: "conversation",
+          model: "Conversation",
+          options: { lean: true },
+          populate: [
+            {
+              path: "participants",
+              model: "User",
+              options: { lean: true },
+            },
+          ],
+        },
       })
       .lean();
 
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    if (!user) return res.status(404).json({ error: "User not found" });
 
-    res.status(200).json(user.conversations || []);
-  } catch (error) {
-    console.error("Error in getConversation controller: ", error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
+    const finalConvos = user.conversations.map((conversation) => ({
+      ...conversation.conversation,
+      lastReadMessageID: conversation.lastReadMessageID,
+    }));
 
-export const getConversation = async (req, res) => {
-  try {
-    const { convoID } = req.params;
-
-    const conversation = await Conversation.findById(convoID)
-      .populate("messages")
-      .populate("participants")
-      .lean();
-    if (!conversation) return res.status(404).json({ error: "Conversation not found" });
-
-    res.status(200).json(conversation);
+    res.status(200).json(finalConvos || []);
   } catch (error) {
     console.error("Error in getConversation controller: ", error.message);
     res.status(500).json({ error: "Internal server error" });
@@ -128,6 +149,12 @@ export const sendMessage = async (req, res) => {
 
     if (newMessage) {
       conversation.messages.push(newMessage._id);
+
+      await User.findByIdAndUpdate(
+        senderID,
+        { $set: { "conversations.$[elem].lastReadMessageID": newMessage._id } },
+        { arrayFilters: [{ "elem.conversation": conversation._id }] }
+      );
     }
 
     await Promise.all([conversation.save(), newMessage.save()]);
