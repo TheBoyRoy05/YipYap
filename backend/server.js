@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import path from "path";
 import cookieParser from "cookie-parser";
 
+import AIRoutes from "./routes/AIRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import friendRoutes from "./routes/friendRoutes.js";
 import conversationRoutes from "./routes/conversationRoutes.js";
@@ -17,6 +18,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
 
+app.use("/api/AI", AIRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/friends", friendRoutes);
 app.use("/api/conversation", conversationRoutes);
