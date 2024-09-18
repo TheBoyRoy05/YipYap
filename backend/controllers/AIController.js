@@ -1,6 +1,6 @@
 import { HfInference } from "@huggingface/inference";
 
-export const getTopics = async (req, res) => {
+export const getResponses = async (req, res) => {
   try {
     const inference = new HfInference(process.env.HUGGING_FACE_API_TOKEN);
 
@@ -17,6 +17,7 @@ export const getTopics = async (req, res) => {
       model: "mistralai/Mistral-Nemo-Instruct-2407",
       messages: prompt,
       max_tokens: 500,
+      temperature: 0.1
     })) {
       generatedText += chunk.choices[0]?.delta?.content || "";
     }

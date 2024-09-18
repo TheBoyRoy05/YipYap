@@ -1,17 +1,18 @@
-import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import useSendMessage from "../../../Hooks/Conversation/useSendMessage";
+import useConversation from "../../../Store/useConversation";
 
 const Input = () => {
-  const [message, setMessage] = useState("");
   const { loading, sendMessage } = useSendMessage();
+  const { setLastMessageTime, messageText, setMessageText } = useConversation();
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (!message) return;
-    await sendMessage(message);
-    setMessage("");
+    if (!messageText) return;
+    setLastMessageTime(Date.now());
+    await sendMessage(messageText);
+    setMessageText("");
   };
 
   return (
@@ -27,8 +28,8 @@ const Input = () => {
           type="text"
           className="flex-grow bg-transparent placeholder-slate-500 text-box text-white"
           placeholder="Message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
         />
         <button
           type="submit"

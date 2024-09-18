@@ -11,7 +11,12 @@ interface ChatProps {
 }
 
 const Conversation = ({ conversation, numNotifs }: ChatProps) => {
-  const { authUser, conversation: selectedConversation, setConversation } = useConversation();
+  const {
+    authUser,
+    conversation: selectedConversation,
+    setConversation,
+    setLastMessageTime,
+  } = useConversation();
   const { setShowFriendsPage } = useFriends();
 
   const { onlineUserIDs } = useSocket();
@@ -25,6 +30,8 @@ const Conversation = ({ conversation, numNotifs }: ChatProps) => {
   const statusColor = selected ? "text-gray-200" : "text-gray-400";
 
   const handleClick = () => {
+    if (selected) return;
+    setLastMessageTime(Date.now());
     setConversation(conversation);
     setShowFriendsPage(false);
   };

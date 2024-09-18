@@ -18,3 +18,9 @@ body {
   border: none;
   outline: none;  
 }
+
+.my-transition {
+  transition-property: all;
+  transition-timing-function: ease;
+  transition-duration: 500ms;
+}

@@ -5,6 +5,7 @@ import { emptyUser } from "../../../Utils/Types";
 import Input from "./Input";
 import Messages from "./Messages";
 import { getConversationName, hashIDToColor } from "../../../Utils/Functions";
+import AIResponses from "./AIResponses";
 
 const ChatScreen = () => {
   const { authUser, conversation } = useConversation();
@@ -39,6 +40,7 @@ const ChatScreen = () => {
         </span>
       </div>
       <Messages />
+      <AIResponses />
       <Input />
     </div>
   );
