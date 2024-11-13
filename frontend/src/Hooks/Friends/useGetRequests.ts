@@ -11,7 +11,7 @@ const useGetRequests = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("jwt");
-        const res = await fetch(`/api/friends/requests/`, {
+        const res = await fetch(`/api/friends/get-requests/`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

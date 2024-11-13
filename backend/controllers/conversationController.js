@@ -6,9 +6,9 @@ import User from "../models/userModel.js";
 export const getMessages = async (req, res) => {
   try {
     const senderID = req.user._id;
-    const { convoID } = req.params;
+    const { id } = req.params;
 
-    const conversation = await Conversation.findById(convoID).populate("messages").lean();
+    const conversation = await Conversation.findById(id).populate("messages").lean();
 
     if (!conversation) return res.status(404).json({ error: "Conversation not found" });
 
@@ -23,7 +23,7 @@ export const getMessages = async (req, res) => {
             "conversations.$[elem].lastReadMessageID": latestMessageID,
           },
         },
-        { arrayFilters: [{ "elem.conversation": convoID }] }
+        { arrayFilters: [{ "elem.conversation": id }] }
       );
     }
 
@@ -37,7 +37,7 @@ export const getMessages = async (req, res) => {
 export const readConversation = async (req, res) => {
   try {
     const userID = req.user._id;
-    const { convoID } = req.params;
+    const { id } = req.params;
     const { lastReadMessageID } = req.body;
     
     await User.findByIdAndUpdate(
@@ -47,7 +47,7 @@ export const readConversation = async (req, res) => {
           "conversations.$[elem].lastReadMessageID": lastReadMessageID,
         },
       },
-      { arrayFilters: [{ "elem.conversation": convoID }] }
+      { arrayFilters: [{ "elem.conversation": id }] }
     );
 
     res.status(200).json({ message: "Conversation read" });
@@ -136,10 +136,10 @@ export const getMyConversations = async (req, res) => {
 
 export const addYapper = async (req, res) => {
   try {
-    const { convoID } = req.params;
+    const { id } = req.params;
     const { username } = req.body;
 
-    const conversation = await Conversation.findById(convoID);
+    const conversation = await Conversation.findById(id);
     if (!conversation) return res.status(404).json({ error: "Conversation not found" });
 
     const user = await User.findOne({ username });
@@ -162,10 +162,10 @@ export const addYapper = async (req, res) => {
 export const sendMessage = async (req, res) => {
   try {
     const { message } = req.body;
-    const { convoID } = req.params;
+    const { id } = req.params;
     const senderID = req.user._id;
 
-    let conversation = await Conversation.findById(convoID);
+    let conversation = await Conversation.findById(id);
     if (!conversation) return res.status(404).json({ error: "Conversation not found" });
 
     const newMessage = new Message({

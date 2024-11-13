@@ -11,11 +11,11 @@ import {
 
 const router = express.Router();
 
-router.get("/messages/:convoID", protectRoute, getMessages);
-router.get("/my-conversations", protectRoute, getMyConversations);
 router.post("/create", protectRoute, createConversation);
-router.post("/read/:convoID", protectRoute, readConversation);
-router.post("/add-yapper/:convoID", protectRoute, addYapper);
-router.post("/send-message/:convoID", protectRoute, sendMessage);
+router.get("/get-all", protectRoute, getMyConversations);
+router.post("/read/:id", protectRoute, readConversation);
+router.get("/messages/:id", protectRoute, getMessages);
+router.post("/add-yapper/:id", protectRoute, addYapper);
+router.post("/send-message/:id", protectRoute, sendMessage);
 
 export default router;

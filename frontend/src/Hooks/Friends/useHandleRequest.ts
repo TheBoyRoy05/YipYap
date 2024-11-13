@@ -13,7 +13,7 @@ const useHandleRequest = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("jwt");
-      const res = await fetch(`/api/friends/requests/handle/${requestID}?action=${action}`, {
+      const res = await fetch(`/api/friends/handle-request/${requestID}?action=${action}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

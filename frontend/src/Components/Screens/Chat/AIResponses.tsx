@@ -17,7 +17,7 @@ const AIResponses = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (Date.now() - lastMessageTime > 3 * 1000) {
+      if (Date.now() - lastMessageTime > 20 * 1000) {
         if (!visible) setFirstClick(true);
         setVisible(true);
       } else {

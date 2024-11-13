@@ -13,7 +13,7 @@ const useGetFriends = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("jwt");
-        const res = await fetch(`/api/friends/`, {
+        const res = await fetch(`/api/friends/get-friends/`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

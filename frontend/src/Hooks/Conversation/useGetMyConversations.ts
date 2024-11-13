@@ -12,7 +12,7 @@ const useGetMyConversations = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("jwt");
-        const res = await fetch(`/api/conversation/my-conversations`, {
+        const res = await fetch(`/api/conversation/get-all`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

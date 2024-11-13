@@ -11,7 +11,7 @@ const useSendRequest = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("jwt");
-      const res = await fetch(`/api/friends/requests/send?username=${username}`, {
+      const res = await fetch(`/api/friends/send-request?username=${username}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

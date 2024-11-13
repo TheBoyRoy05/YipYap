@@ -9,9 +9,9 @@ import {
 
 const router = express.Router();
 
-router.get("/", protectRoute, getFriends);
-router.get("/requests/", protectRoute, getFriendRequests);
-router.post("/requests/send/", protectRoute, sendFriendRequest);
-router.delete("/requests/handle/:id", protectRoute, handleFriendRequest);
+router.get("/get-friends/", protectRoute, getFriends);
+router.get("/get-requests/", protectRoute, getFriendRequests);
+router.post("/send-request/", protectRoute, sendFriendRequest);
+router.delete("/handle-request/:id", protectRoute, handleFriendRequest);
 
 export default router;
